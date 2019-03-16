@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "321946643849",
+    "firebase_url": "https://ecohelp-5debe.firebaseio.com",
+    "project_id": "ecohelp-5debe",
+    "storage_bucket": "ecohelp-5debe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321946643849:android:68675bc978d7595b",
+        "android_client_info": {
+          "package_name": "com.example.ecohelp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321946643849-rba599mf9epk45v9fsd8ocug7iftkpvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCONT7QSqD4vpQML6qUE8_gwCywZvlafZM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
