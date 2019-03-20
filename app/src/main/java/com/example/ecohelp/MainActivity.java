@@ -16,8 +16,6 @@ package com.example.ecohelp;
         import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends Activity implements
-
-
         View.OnClickListener {
     private static final String TAG = "EmailPassword";
     //Инициализация всего
@@ -25,16 +23,20 @@ public class MainActivity extends Activity implements
     private EditText mPasswordField;
     public ProgressDialog pd;
 
+    protected FirebaseAuth mAuth;
 
-
-
-    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         FirebaseApp.initializeApp(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
+
+
 
         // Поля
         mEmailField = findViewById(R.id.fieldEmail);
@@ -43,6 +45,7 @@ public class MainActivity extends Activity implements
         // Кнопки
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -113,7 +116,6 @@ public class MainActivity extends Activity implements
     }
 
 
-
     private boolean validateForm() {
         boolean valid = true;
 
@@ -136,18 +138,25 @@ public class MainActivity extends Activity implements
         return !valid;
     }
 
+    protected void signOut() {
+        mAuth.signOut();
+        updateUI(null);
+    }
+
     private void updateUI(FirebaseUser user) {
         pd = new ProgressDialog(this);
         pd.hide();
         if (user != null) {
-            Intent intent = new Intent(this, Menu.class);
+            Intent intent = new Intent(MainActivity.this, Menu.class);
             startActivity(intent);
+
         }
 
     }
 
     @Override
     public void onClick(View v) {
+
         int i = v.getId();
         if (i == R.id.emailCreateAccountButton) {
             createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
@@ -156,5 +165,9 @@ public class MainActivity extends Activity implements
         }
 
     }
-}
+
+
+ }
+
+
 

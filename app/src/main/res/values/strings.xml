@@ -10,7 +10,7 @@
     <string name="settings">Настройки</string>
     <string name="map">Пункты сдачи</string>
     <string name="about">Как работает?</string>
-
+    <string name="signOut">Выход</string>
 
 
 </resources>
