@@ -11,6 +11,10 @@
     <string name="map">Пункты сдачи</string>
     <string name="about">Как работает?</string>
     <string name="signOut">Выход</string>
+    <string name="qr">Сканер QR кода</string>
+    <string name="scan_process_label">Scanning…</string>
+    <string name="scan_label">Scan</string>
+    <string name="scan_result_label">Last scan result: </string>
 
 
 </resources>

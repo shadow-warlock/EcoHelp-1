@@ -138,10 +138,7 @@ public class MainActivity extends Activity implements
         return !valid;
     }
 
-    protected void signOut() {
-        mAuth.signOut();
-        updateUI(null);
-    }
+
 
     private void updateUI(FirebaseUser user) {
         pd = new ProgressDialog(this);
@@ -149,6 +146,7 @@ public class MainActivity extends Activity implements
         if (user != null) {
             Intent intent = new Intent(MainActivity.this, Menu.class);
             startActivity(intent);
+            finish();
 
         }
 
