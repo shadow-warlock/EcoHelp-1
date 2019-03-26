@@ -141,8 +141,6 @@ public class MainActivity extends Activity implements
 
 
     private void updateUI(FirebaseUser user) {
-        pd = new ProgressDialog(this);
-        pd.hide();
         if (user != null) {
             Intent intent = new Intent(MainActivity.this, Menu.class);
             startActivity(intent);

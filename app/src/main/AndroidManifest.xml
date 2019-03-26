@@ -15,7 +15,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,RtlEnabled"
         tools:targetApi="donut">
-        <activity android:name=".QR"></activity>
+        <activity android:name=".Library">
+
+        </activity>
+        <activity android:name=".QR" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -23,7 +26,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity android:name=".Menu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Menu$SignOut" />
+
     </application>
 
 </manifest>

@@ -28,6 +28,7 @@ public class Menu extends Activity {
               FirebaseAuth.getInstance().signOut();
               Intent intent = new Intent(this, MainActivity.class);
               startActivity(intent);
+              finish();
             }
             else if (i==R.id.QR){
               Intent intent = new Intent(this, QR.class);
@@ -35,6 +36,10 @@ public class Menu extends Activity {
 
 
 
+            }
+            else if (i==R.id.menu){
+                Intent intent = new Intent(this,Library.class);
+                startActivity(intent);
             }
 
         }
