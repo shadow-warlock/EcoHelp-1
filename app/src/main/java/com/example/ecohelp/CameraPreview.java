@@ -19,7 +19,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Camera mCamera;
     private PreviewCallback previewCallback;
     private AutoFocusCallback autoFocusCallback;
-    private byte[] cameraBuffer;
 
     public CameraPreview(Context context, Camera camera,
                          PreviewCallback previewCb,
@@ -49,7 +48,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder.addCallback(this);
 
         // deprecated setting, but required on Android versions prior to 3.0
-        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
     }
 
     public void surfaceCreated(SurfaceHolder holder) {
@@ -89,7 +88,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 Camera.Size previewSize = parameters.getPreviewSize();
                 int imageFormat = parameters.getPreviewFormat();
                 int bufferSize = previewSize.width * previewSize.height * ImageFormat.getBitsPerPixel(imageFormat) / 8;
-                cameraBuffer = new byte[bufferSize];
+                byte[] cameraBuffer = new byte[bufferSize];
 
                 // Hard code camera surface rotation 90 degs to match Activity view in portrait
                 mCamera.setDisplayOrientation(90);
