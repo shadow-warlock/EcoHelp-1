@@ -1,42 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/darker_gray">
+    android:layout_height="match_parent">
 
-  <FrameLayout
-      android:id="@+id/cameraPreview"
-      android:layout_width="200dip"
-      android:layout_height="200dip"
-      android:layout_gravity="center"
-      android:layout_marginTop="20dip"
-      android:background="@android:color/white" />
+    <Button
+        android:id="@+id/btnPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginLeft="42dp"
+        android:onClick="OnClickCamera"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="206dp" />
 
-  <TextView
-      android:id="@+id/scanText"
-      android:text="@string/scan_process_label"
-      android:layout_height="wrap_content"
-      android:layout_width="wrap_content"
-      android:layout_margin="10dip"
-      android:layout_gravity="center_horizontal"
-      android:textColor="@android:color/black" />
-
-
-  <ImageView
-      android:id="@+id/bar_code"
-      android:layout_width="150dip"
-      android:layout_height="150dip"
-      android:layout_gravity="center"
-      android:background="@android:color/white" />
-
-  <EditText
-      android:id="@+id/code_for_bar"
-      android:layout_width="200dip"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:layout_marginTop="20dip"
-      android:text="123456789" />
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/scanText"
+        android:layout_width="174dp"
+        android:layout_height="103dp"
+        android:layout_marginTop="54dp"
+        android:layout_marginEnd="130dp"
+        android:layout_marginRight="130dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
