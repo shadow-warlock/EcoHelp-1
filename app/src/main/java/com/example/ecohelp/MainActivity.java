@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements
 
         // Кнопки
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
-        findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
+
 
 
 
@@ -59,33 +59,7 @@ public class MainActivity extends Activity implements
         updateUI(currentUser);
     }
 
-    private void createAccount(String email, String password) {
-        Log.d(TAG, "Создание аккаунта" + email);
-        if (validateForm()) {
-            return;
-        }
-        pd = new ProgressDialog(this);
 
-        pd.show();
-        pd.setMessage("Регистрация");
-
-        //Регистрация через емайл
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-                pd.hide();
-                Log.d(TAG, "Аккаунт успешно создан");
-                FirebaseUser user = mAuth.getCurrentUser();
-                updateUI(user);
-            } else {
-                pd.hide();
-                Log.w(TAG, "Ошибка создания аккаунта", task.getException());
-                Toast.makeText(MainActivity.this, "Ошибка создания аккаунта",
-                        Toast.LENGTH_SHORT).show();
-                updateUI(null);
-            }
-
-        });
-    }
 
     private void signIn(String email, String password) {
         Log.d(TAG, "Вход" + email);
@@ -154,9 +128,7 @@ public class MainActivity extends Activity implements
     public void onClick(View v) {
 
         int i = v.getId();
-        if (i == R.id.emailCreateAccountButton) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.emailSignInButton) {
+        if (i == R.id.emailSignInButton) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         }
 

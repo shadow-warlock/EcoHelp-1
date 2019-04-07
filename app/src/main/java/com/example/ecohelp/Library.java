@@ -24,6 +24,7 @@ List<Coupons> couponss = new ArrayList<>();
 
     }
     private void setInitialData(){
+
         couponss.add(new Coupons("Лента","-500",R.drawable.aaaaaaaaaaa));
     }
 

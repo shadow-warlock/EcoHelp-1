@@ -16,6 +16,15 @@
     <string name="scan_label">Scan</string>
     <string name="scan_result_label">Last scan result: </string>
     <string name="library">Библиотека</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="sinInwithEmail">Вход через почту</string>
+    <string name="Create">Регистрация</string>
+    <string name="google">Вход через Google</string>
+    <string name="inputLogin">Введите логин</string>
+    <string name="inputEmail">Введите Email</string>
+    <string name="inputPassword">Введите пароль</string>
+    <string name="repeatPassword">Повторите пароль</string>
 
 
 </resources>
