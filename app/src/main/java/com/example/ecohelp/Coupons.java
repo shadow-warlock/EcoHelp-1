@@ -1,5 +1,10 @@
 package com.example.ecohelp;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Coupons {
     private String name;
     private int logo;
@@ -29,4 +34,15 @@ public class Coupons {
     public void setLogo(int logo){
         this.logo = logo;
     }
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("name", name);
+        result.put("sum", sum);
+        result.put("logo", logo);
+
+
+        return result;
+    }
+
 }

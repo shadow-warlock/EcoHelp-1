@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Ref;
 
@@ -24,6 +26,8 @@ public class Registation extends Activity {
     private EditText RepeatPassword;
     private EditText Login;
     public ProgressDialog pd;
+    private DatabaseReference mDatabase;
+
 
     protected FirebaseAuth mAuth;
 
@@ -35,11 +39,15 @@ public class Registation extends Activity {
         PasswordField = findViewById(R.id.inputPassword);
         RepeatPassword = findViewById(R.id.repeatPassword);
         Login = findViewById(R.id.inputLogin);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
     }
 
-    private void createAccount(String email, String password) {
-        if (PasswordField == RepeatPassword) {
+    private void createAccount() {
+        String repeatPassword =  RepeatPassword.getText().toString();
+        String email = EmailField.getText().toString() ;
+        String password =  PasswordField.getText().toString();
+        if (password.equals(repeatPassword)) {
             Log.d(TAG, "Создание аккаунта" + email);
             if (validateForm()) {
                 return;
@@ -68,7 +76,7 @@ public class Registation extends Activity {
             });
         }
         else {
-            EmailField.setError("Пароли не совпадают");
+            PasswordField.setError("Пароли не совпадают");
             RepeatPassword.setError("Пароли не совпадают");
 
         }
@@ -106,7 +114,12 @@ public class Registation extends Activity {
 
         }
     }
+    private void writeNewUser(String userId, String name, String email) {
+        User user = new User(name, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
     public void Onclick(View v){
-        createAccount(EmailField.getText().toString(), PasswordField.getText().toString());
+        createAccount();
     }
 }

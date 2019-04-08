@@ -3,8 +3,6 @@
     <string name="email_fmt">Email: %s</string>
     <string name="createAccount">Создать аккаунт</string>
     <string name="signIn">Вход</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
     <string name="title_activity_maps">Map</string>
     <string name="app_name">EcoHelp</string>
     <string name="settings">Настройки</string>

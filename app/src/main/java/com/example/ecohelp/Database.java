@@ -19,7 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 public class Database extends Activity {
     private FirebaseAuth mAuth;
     private DatabaseReference myRef;
-    private int coinsAmount;
     TextView golds = (TextView) findViewById(R.id.textView);
     private static final String TAG = "EcoHelp";
 
@@ -32,17 +31,20 @@ public class Database extends Activity {
 
     }
 
+
     public void basicReadWrite() {
         // [START write_message]
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-        myRef.setValue("Hello");
+        DatabaseReference myRef = database.getReference("goldsAmount");
+        int coinsAmount = 0;
+        myRef.setValue(coinsAmount);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + value);
+                Integer amount = dataSnapshot.getValue(Integer.class);
+                Coupons coupons = dataSnapshot.getValue(Coupons.class);
+                Log.d(TAG, "Value is: " + amount);
             }
 
             @Override
