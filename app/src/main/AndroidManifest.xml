@@ -19,10 +19,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,RtlEnabled"
         tools:targetApi="donut">
-        <activity android:name=".Registation">
-
-
-        </activity>
+        <activity android:name=".google"></activity>
+        <activity android:name=".Registation"></activity>
         <activity android:name=".Main2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

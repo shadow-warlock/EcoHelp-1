@@ -54,13 +54,12 @@ public class MainActivity extends Activity implements
 
 
 
-
     private void signIn(String email, String password) {
         Log.d(TAG, "Вход" + email);
         if (validateForm()) {
             return;
         }
-        pd = new ProgressDialog(this);
+
         pd.show();
         pd.setMessage("Вход");
 

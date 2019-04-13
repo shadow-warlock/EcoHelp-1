@@ -51,7 +51,7 @@ public class Registation extends Activity {
             if (validateForm()) {
                 return;
             }
-            pd = new ProgressDialog(this);
+
 
             pd.show();
             pd.setMessage("Регистрация");

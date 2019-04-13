@@ -17,9 +17,24 @@ public class Main2Activity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main2);
         findViewById(R.id.create).setOnClickListener(this);
         findViewById(R.id.signinwithEmail).setOnClickListener(this);
+        mAuth = FirebaseAuth.getInstance();
 
     }
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser
+                user = mAuth.getCurrentUser();
+        updateUI(user);
+    }
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(Main2Activity.this, Menu.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 
 
     @Override
