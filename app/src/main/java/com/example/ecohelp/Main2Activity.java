@@ -5,7 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class Main2Activity extends Activity implements View.OnClickListener {
+    protected FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +19,8 @@ public class Main2Activity extends Activity implements View.OnClickListener {
         findViewById(R.id.signinwithEmail).setOnClickListener(this);
 
     }
+
+
 
     @Override
     public void onClick(View v) {

@@ -51,13 +51,7 @@ public class MainActivity extends Activity implements
         mAuth = FirebaseAuth.getInstance();
     }
 
-    //Проверка входа
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
+
 
 
 

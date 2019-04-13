@@ -3,7 +3,7 @@ package com.example.ecohelp;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,8 +16,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.sql.Ref;
-
 public class Registation extends Activity {
     private static final String TAG = "EmailPassword";
     //Инициализация всего
@@ -27,6 +25,7 @@ public class Registation extends Activity {
     private EditText Login;
     public ProgressDialog pd;
     private DatabaseReference mDatabase;
+
 
 
     protected FirebaseAuth mAuth;
@@ -40,15 +39,15 @@ public class Registation extends Activity {
         RepeatPassword = findViewById(R.id.repeatPassword);
         Login = findViewById(R.id.inputLogin);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+
 
     }
 
-    private void createAccount() {
-        String repeatPassword =  RepeatPassword.getText().toString();
-        String email = EmailField.getText().toString() ;
-        String password =  PasswordField.getText().toString();
-        if (password.equals(repeatPassword)) {
-            Log.d(TAG, "Создание аккаунта" + email);
+    private void createAccount(String email, String password) {
+
+
+        Log.d(TAG, "Создание аккаунта" + email);
             if (validateForm()) {
                 return;
             }
@@ -65,6 +64,10 @@ public class Registation extends Activity {
                     Log.d(TAG, "Аккаунт успешно создан");
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
+                    assert user != null;
+                    String uID = user.getUid();
+                    String login = Login.getText().toString();
+                    writeNewUser(uID,email,login);
                 } else {
                     pd.hide();
                     Log.w(TAG, "Ошибка создания аккаунта", task.getException());
@@ -75,12 +78,10 @@ public class Registation extends Activity {
 
             });
         }
-        else {
-            PasswordField.setError("Пароли не совпадают");
-            RepeatPassword.setError("Пароли не совпадают");
 
-        }
-    }
+
+
+
 
 
 
@@ -114,12 +115,24 @@ public class Registation extends Activity {
 
         }
     }
-    private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, email);
+    private void writeNewUser(String userId,String email,String name) {
+
+        User user = new User(name,email);
 
         mDatabase.child("users").child(userId).setValue(user);
     }
     public void Onclick(View v){
-        createAccount();
+        String repeatPassword =  RepeatPassword.getText().toString();
+        String password =  PasswordField.getText().toString();
+        if (password.equals(repeatPassword)){
+
+            createAccount(EmailField.getText().toString(), PasswordField.getText().toString());
+
+    }
+    else {
+            PasswordField.setError("Пароли не совпадают");
+            RepeatPassword.setError("Пароли не совпадают");
+        }
+
     }
 }
