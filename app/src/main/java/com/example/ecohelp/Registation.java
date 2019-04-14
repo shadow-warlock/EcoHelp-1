@@ -1,7 +1,6 @@
 package com.example.ecohelp;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
+
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -16,14 +15,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Registation extends Activity {
+public class Registation extends baseactivity {
     private static final String TAG = "EmailPassword";
     //Инициализация всего
     private EditText EmailField;
     private EditText PasswordField;
     private EditText RepeatPassword;
     private EditText Login;
-    public ProgressDialog pd;
+
     private DatabaseReference mDatabase;
 
 
@@ -42,6 +41,7 @@ public class Registation extends Activity {
         mAuth = FirebaseAuth.getInstance();
 
 
+
     }
 
     private void createAccount(String email, String password) {
@@ -53,23 +53,22 @@ public class Registation extends Activity {
             }
 
 
-            pd.show();
-            pd.setMessage("Регистрация");
+            showProgressDialog();
 
             //Регистрация через емайл
 
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
-                    pd.hide();
+                    hideProgressDialog();
                     Log.d(TAG, "Аккаунт успешно создан");
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
                     assert user != null;
-                    String uID = user.getUid();
+
                     String login = Login.getText().toString();
-                    writeNewUser(uID,email,login);
+                    writeNewUser(getUid(),email,login);
                 } else {
-                    pd.hide();
+                    hideProgressDialog();
                     Log.w(TAG, "Ошибка создания аккаунта", task.getException());
                     Toast.makeText(Registation.this, "Ошибка создания аккаунта",
                             Toast.LENGTH_SHORT).show();

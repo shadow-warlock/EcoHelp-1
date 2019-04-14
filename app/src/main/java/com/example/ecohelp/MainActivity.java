@@ -15,13 +15,13 @@ package com.example.ecohelp;
         import com.google.firebase.auth.FirebaseAuth;
         import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends Activity implements
+public class MainActivity extends baseactivity implements
         View.OnClickListener {
     private static final String TAG = "EmailPassword";
     //Инициализация всего
     private EditText mEmailField;
     private EditText mPasswordField;
-    public ProgressDialog pd;
+
 
     protected FirebaseAuth mAuth;
 
@@ -31,6 +31,7 @@ public class MainActivity extends Activity implements
         FirebaseApp.initializeApp(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
 
@@ -60,18 +61,17 @@ public class MainActivity extends Activity implements
             return;
         }
 
-        pd.show();
-        pd.setMessage("Вход");
+        showProgressDialog();
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        pd.hide();
+                        hideProgressDialog();
                         Log.d(TAG, "Вход через почту успешен");
                         FirebaseUser user = mAuth.getCurrentUser();
                         updateUI(user);
                     } else {
-                        pd.hide();
+                        hideProgressDialog();
                         Log.w(TAG, "Вход не вошелся", task.getException());
                         Toast.makeText(MainActivity.this, "Ошибка входа",
                                 Toast.LENGTH_SHORT).show();

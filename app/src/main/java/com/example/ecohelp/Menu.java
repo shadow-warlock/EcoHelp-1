@@ -1,26 +1,16 @@
 package com.example.ecohelp;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class Menu extends Activity {
-    private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
+public class Menu extends baseactivity {
 
-    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build();
 
 
 
@@ -28,26 +18,10 @@ public class Menu extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_menu);
-        mAuth = FirebaseAuth.getInstance();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
     }
-    private void signOut() {
-
-        mAuth.signOut();
 
 
-        mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                task -> startmainactivity() );
-    }
-
-    public void startmainactivity() {
-
-        Intent intent = new Intent(Menu.this, Main2Activity.class);
-        startActivity(intent);
-        finish();
-
-    }
 
     public void onClick1(View v) {
             int i = v.getId();
@@ -56,7 +30,7 @@ public class Menu extends Activity {
                 startActivity(intent);
             } else if (i == R.id.signOut) {
               FirebaseAuth.getInstance().signOut();
-              Intent intent = new Intent(this, MainActivity.class);
+              Intent intent = new Intent(this, Main2Activity.class);
               startActivity(intent);
               finish();
             }
@@ -71,9 +45,7 @@ public class Menu extends Activity {
                 Intent intent = new Intent(this,Library.class);
                 startActivity(intent);
             }
-            else if (i==R.id.signOutGoogle){
-                signOut();
-            }
+
 
         }
     private static long back_pressed;
