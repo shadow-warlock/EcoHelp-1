@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
@@ -52,6 +53,9 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'com.yanzhenjie.zbar:camera:1.0.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+    testImplementation "org.robolectric:robolectric:3.2.2"
 }
 
 apply plugin: 'com.google.gms.google-services'

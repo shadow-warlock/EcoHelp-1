@@ -23,6 +23,8 @@
     <string name="inputEmail">Введите Email</string>
     <string name="inputPassword">Введите пароль</string>
     <string name="repeatPassword">Повторите пароль</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
 
 
 </resources>

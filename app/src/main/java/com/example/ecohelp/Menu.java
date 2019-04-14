@@ -30,12 +30,12 @@ public class Menu extends baseactivity {
                 startActivity(intent);
             } else if (i == R.id.signOut) {
               FirebaseAuth.getInstance().signOut();
-              Intent intent = new Intent(this, Main2Activity.class);
+              Intent intent = new Intent(this, DecoderActivity.class);
               startActivity(intent);
               finish();
             }
             else if (i==R.id.QR){
-              Intent intent = new Intent(this, QR.class);
+              Intent intent = new Intent(this, Menu.class);
               startActivity(intent);
 
 
