@@ -7,7 +7,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.0'
         classpath 'com.google.gms:google-services:4.2.0'
         
     }
@@ -21,7 +21,29 @@ allprojects {
         maven { url 'https://maven.fabric.io/public' }
     }
 }
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+task pmd(type: Pmd) {
+    ruleSetFiles = files("${project.rootDir}/pmd.xml")
+    ruleSets = ["java-basic", "java-braces", "java-strings"]
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+}
+task checkstyle(type: Checkstyle) {
+    configFile rootProject.file('checkstyle.xml')
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
+}
+
+pmd {
+    consoleOutput = true
 }
