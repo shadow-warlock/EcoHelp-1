@@ -104,6 +104,20 @@ public class RegistationActivity extends BaseActivity {
         } else {
             PasswordField.setError(null);
         }
+        String repeatPassword = RepeatPassword.getText().toString();
+        if(TextUtils.isEmpty(repeatPassword)){
+            RepeatPassword.setError("Пусто");
+        }
+        else{
+            RepeatPassword.setError(null);
+        }
+        String login = Login.getText().toString();
+        if(TextUtils.isEmpty(login)){
+            Login.setError("Пусто");
+        }
+        else {
+            Login.setError(null);
+        }
 
         return !valid;
     }

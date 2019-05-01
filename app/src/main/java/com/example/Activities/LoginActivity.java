@@ -29,7 +29,7 @@ public class LoginActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         FirebaseApp.initializeApp(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
 
 

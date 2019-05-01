@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.Classes.GoogleUser;
 import com.example.ecohelp.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -35,7 +36,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
         findViewById(R.id.create).setOnClickListener(this);
         findViewById(R.id.signinwithEmail).setOnClickListener(this);
         findViewById(R.id.signInGoogle).setOnClickListener(this);
@@ -139,7 +140,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         GoogleUser user = new GoogleUser(account,coinsAmount);
 
-        mDatabase.child("GoogleUsers").child(userId).setValue(user);
+        mDatabase.child("users").child(userId).setValue(user);
     }
 
 
