@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.List;
 
 /**
@@ -57,9 +57,7 @@ final class CameraConfigurationManager {
   private Point resolution;
   private Point cameraResolution;
   private Point bestPreviewSize;
-  private Point previewSizeOnScreen;
   private int cwRotationFromDisplayToCamera;
-  private int cwNeededRotation;
 
   CameraConfigurationManager(Context context) {
     this.context = context;
@@ -107,6 +105,7 @@ final class CameraConfigurationManager {
     cwRotationFromDisplayToCamera =
         (360 + cwRotationFromNaturalToCamera - cwRotationFromNaturalToDisplay) % 360;
     SimpleLog.i(TAG, "Final display orientation: " + cwRotationFromDisplayToCamera);
+    int cwNeededRotation;
     if (camera.getFacing() == CameraFacing.FRONT) {
       SimpleLog.i(TAG, "Compensating rotation for front camera");
       cwNeededRotation = (360 - cwRotationFromDisplayToCamera) % 360;
@@ -125,9 +124,11 @@ final class CameraConfigurationManager {
     boolean isScreenPortrait = resolution.x < resolution.y;
     boolean isPreviewSizePortrait = bestPreviewSize.x < bestPreviewSize.y;
 
+    Point previewSizeOnScreen;
     if (isScreenPortrait == isPreviewSizePortrait) {
       previewSizeOnScreen = bestPreviewSize;
     } else {
+      //noinspection SuspiciousNameCombination
       previewSizeOnScreen = new Point(bestPreviewSize.y, bestPreviewSize.x);
     }
     SimpleLog.i(TAG, "Preview size on screen: " + previewSizeOnScreen);
@@ -197,7 +198,7 @@ final class CameraConfigurationManager {
 
   // All references to Torch are removed from here, methods, variables...
 
-  public Point findBestPreviewSizeValue(Camera.Parameters parameters, Point screenResolution) {
+  private Point findBestPreviewSizeValue(Camera.Parameters parameters, Point screenResolution) {
 
     List<Camera.Size> rawSupportedSizes = parameters.getSupportedPreviewSizes();
     if (rawSupportedSizes == null) {
@@ -207,19 +208,11 @@ final class CameraConfigurationManager {
     }
 
     // Sort by size, descending
-    List<Camera.Size> supportedPreviewSizes = new ArrayList<Camera.Size>(rawSupportedSizes);
-    Collections.sort(supportedPreviewSizes, new Comparator<Camera.Size>() {
-      @Override public int compare(Camera.Size a, Camera.Size b) {
-        int aPixels = a.height * a.width;
-        int bPixels = b.height * b.width;
-        if (bPixels < aPixels) {
-          return -1;
-        }
-        if (bPixels > aPixels) {
-          return 1;
-        }
-        return 0;
-      }
+    List<Camera.Size> supportedPreviewSizes = new ArrayList<>(rawSupportedSizes);
+    Collections.sort(supportedPreviewSizes, (a, b) -> {
+      int aPixels = a.height * a.width;
+      int bPixels = b.height * b.width;
+      return Integer.compare(bPixels, aPixels);
     });
 
     if (Log.isLoggable(TAG, Log.INFO)) {
@@ -295,8 +288,8 @@ final class CameraConfigurationManager {
       Camera.Parameters parameters = camera.getParameters();
       if (parameters != null) {
         String flashMode = camera.getParameters().getFlashMode();
-        return flashMode != null && (Camera.Parameters.FLASH_MODE_ON.equals(flashMode)
-            || Camera.Parameters.FLASH_MODE_TORCH.equals(flashMode));
+        return (Camera.Parameters.FLASH_MODE_ON.equals(flashMode)
+                || Camera.Parameters.FLASH_MODE_TORCH.equals(flashMode));
       }
     }
     return false;
@@ -308,7 +301,7 @@ final class CameraConfigurationManager {
     camera.setParameters(parameters);
   }
 
-  void setTorchEnabled(Camera.Parameters parameters, boolean enabled, boolean safeMode) {
+  private void setTorchEnabled(Camera.Parameters parameters, boolean enabled, boolean safeMode) {
     setTorchEnabled(parameters, enabled);
 
     if (!safeMode) {
@@ -316,8 +309,8 @@ final class CameraConfigurationManager {
     }
   }
 
-  public static void setTorchEnabled(Camera.Parameters parameters,
-                                     boolean enabled) {
+  private static void setTorchEnabled(Camera.Parameters parameters,
+                                      boolean enabled) {
     List<String> supportedFlashModes = parameters.getSupportedFlashModes();
     String flashMode;
     if (enabled) {
@@ -340,8 +333,8 @@ final class CameraConfigurationManager {
     }
   }
 
-  public static void setBestExposure(Camera.Parameters parameters,
-                                     boolean lightOn) {
+  private static void setBestExposure(Camera.Parameters parameters,
+                                      boolean lightOn) {
 
     int minExposure = parameters.getMinExposureCompensation();
     int maxExposure = parameters.getMaxExposureCompensation();

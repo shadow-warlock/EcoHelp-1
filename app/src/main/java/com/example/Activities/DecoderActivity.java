@@ -28,8 +28,6 @@ public class DecoderActivity extends Activity
 
   private TextView resultTextView;
   private QRCodeReaderView qrCodeReaderView;
-  private CheckBox flashlightCheckBox;
-  private CheckBox enableDecodingCheckBox;
   private PointsOverlayView pointsOverlayView;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,7 @@ public class DecoderActivity extends Activity
 
     setContentView(R.layout.activity_decoder);
 
-    mainLayout = (ViewGroup) findViewById(R.id.main_layout);
+    mainLayout = findViewById(R.id.main_layout);
 
     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
         == PackageManager.PERMISSION_GRANTED) {
@@ -91,11 +89,11 @@ public class DecoderActivity extends Activity
   private void initQRCodeReaderView() {
     View content = getLayoutInflater().inflate(R.layout.content_decoder, mainLayout, true);
 
-    qrCodeReaderView = (QRCodeReaderView) content.findViewById(R.id.qrdecoderview);
-    resultTextView = (TextView) content.findViewById(R.id.result_text_view);
-    flashlightCheckBox = (CheckBox) content.findViewById(R.id.flashlight_checkbox);
-    enableDecodingCheckBox = (CheckBox) content.findViewById(R.id.enable_decoding_checkbox);
-    pointsOverlayView = (PointsOverlayView) content.findViewById(R.id.points_overlay_view);
+    qrCodeReaderView = content.findViewById(R.id.qrdecoderview);
+    resultTextView = content.findViewById(R.id.result_text_view);
+    CheckBox flashlightCheckBox = content.findViewById(R.id.flashlight_checkbox);
+    CheckBox enableDecodingCheckBox = content.findViewById(R.id.enable_decoding_checkbox);
+    pointsOverlayView = content.findViewById(R.id.points_overlay_view);
 
     qrCodeReaderView.setAutofocusInterval(2000L);
     qrCodeReaderView.setOnQRCodeReadListener(this);

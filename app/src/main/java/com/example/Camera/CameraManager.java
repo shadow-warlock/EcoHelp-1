@@ -41,7 +41,6 @@ public final class CameraManager {
 
   private static final String TAG = CameraManager.class.getSimpleName();
 
-  private final Context context;
   private final CameraConfigurationManager configManager;
   private OpenCamera openCamera;
   private AutoFocusManager autoFocusManager;
@@ -58,7 +57,7 @@ public final class CameraManager {
   private long autofocusIntervalInMs = AutoFocusManager.DEFAULT_AUTO_FOCUS_INTERVAL_MS;
 
   public CameraManager(Context context) {
-    this.context = context;
+    Context context1 = context;
     this.configManager = new CameraConfigurationManager(context);
   }
 
@@ -179,7 +178,7 @@ public final class CameraManager {
     }
   }
 
-  public synchronized boolean isOpen() {
+  private synchronized boolean isOpen() {
     return openCamera != null && openCamera.getCamera() != null;
   }
 

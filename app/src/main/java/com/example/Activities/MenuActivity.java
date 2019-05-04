@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class MenuActivity extends BaseActivity {
 
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +36,13 @@ public class MenuActivity extends BaseActivity {
         DatabaseReference uidRef = rootRef.child("users").child(getUid());
 
         ValueEventListener valueEventListener = new ValueEventListener() {
+            @SuppressWarnings("ConstantConditions")
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                long coinsAmount = dataSnapshot.child("coinsAmount").getValue(Long.class);
-                text.setText(String.valueOf(coinsAmount));
+
+                    long coinsAmount = dataSnapshot.child("coinsAmount").getValue(Long.class);
+                    text.setText(String.valueOf(coinsAmount));
+
             }
 
             @Override
@@ -45,7 +50,7 @@ public class MenuActivity extends BaseActivity {
                 Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
             }
         };
-        uidRef.addListenerForSingleValueEvent(valueEventListener);
+        uidRef.addValueEventListener(valueEventListener);
 
     }
 

@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class BaseActivity extends Activity {
 
     private ProgressDialog mProgressDialog;
@@ -26,7 +28,7 @@ public class BaseActivity extends Activity {
     }
 
     public String getUid() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     }
 
 

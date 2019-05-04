@@ -3,6 +3,7 @@ package com.example.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
@@ -18,8 +19,13 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Registration";
@@ -42,6 +48,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         findViewById(R.id.signInGoogle).setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -84,6 +92,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             try {
 
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                assert account != null;
                 firebaseAuthWithGoogle(account);
 
             } catch (ApiException e) {
@@ -113,8 +122,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                         Log.d(TAG, "Успешно");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        writeNewUser(getUid(),account,0);
                         updateUI(user);
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference uidRef = rootRef.child("users");
+                        ValueEventListener valueEventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                HashMap uId = dataSnapshot.child(getUid()).getValue(HashMap.class);
+                                String uidString = String.valueOf(uId.hashCode());
+
+                                if (!uidString.equals(getUid())) {
+                                    writeNewUser(getUid(), account);
+                                }
+
+
+                                }
+
+
+
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+                            }
+                        };
+                        uidRef.addValueEventListener(valueEventListener);
+
                     } else {
 
                         Log.w(TAG, "Ошибка", task.getException());
@@ -136,11 +170,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    private void writeNewUser(String userId,String account,int coinsAmount) {
+    private void writeNewUser(String userId, String account) {
 
-        GoogleUser user = new GoogleUser(account,coinsAmount);
+        GoogleUser user = new GoogleUser(account, 0);
 
         mDatabase.child("users").child(userId).setValue(user);
+        mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("lenta").child("lenta100").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("lenta").child("lenta300").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("lenta").child("lenta500").setValue(0);
     }
 
 

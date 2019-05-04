@@ -1,21 +1,28 @@
 package com.example.Activities;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
 
 import com.example.Classes.Coupons;
 import com.example.ecohelp.R;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LibraryActivity extends Activity {
+public class LibraryActivity extends BaseActivity {
+    private static final String TAG = "LibraryActivity";
+
+
 
 
 List<Coupons> couponss = new ArrayList<>();
@@ -23,22 +30,58 @@ List<Coupons> couponss = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
-        setInitialData();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
+        RecyclerView recyclerView = findViewById(R.id.list);
         RecyclerAdapter adapter = new RecyclerAdapter(this,couponss);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        Query query = rootRef.child("Сoupons");
-        FirebaseRecyclerOptions<Coupons> firebaseRecyclerOptions = new FirebaseRecyclerOptions.Builder<Coupons>()
-                .setQuery(query, Coupons.class)
-                .build();
+        DatabaseReference uidRef = rootRef.child("users").child(getUid()).child("coupons");
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @SuppressWarnings("ConstantConditions")
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                long petiarochkaAmount100 = dataSnapshot.child("petiarochka").child("petiarochka100").getValue(Long.class);
+                long petiarochkaAmount300 = dataSnapshot.child("petiarochka").child("petiarochka300").getValue(Long.class);
+                long petiarochkaAmount500 = dataSnapshot.child("petiarochka").child("petiarochka500").getValue(Long.class);
+                long lentaAmount100 = dataSnapshot.child("lenta").child("lenta100").getValue(Long.class);
+                long lentaAmount300 = dataSnapshot.child("lenta").child("lenta300").getValue(Long.class);
+                long lentaAmount500 = dataSnapshot.child("lenta").child("lenta500").getValue(Long.class);
+                for (int i = 0; i <petiarochkaAmount100 ; i++) {
+                    couponss.add(new Coupons(R.drawable.petiarochka));
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+            }
+        };
+        uidRef.addValueEventListener(valueEventListener);
+
+
+
+
 
     }
-    private void setInitialData(){
 
-        couponss.add(new Coupons("Лента","-500",R.drawable.aaaaaaaaaaa));
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 

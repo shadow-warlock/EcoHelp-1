@@ -68,7 +68,7 @@ public class RegistationActivity extends BaseActivity {
                     assert user != null;
 
                     String login = Login.getText().toString();
-                    writeNewUser(getUid(),email,login,0);
+                    writeNewUser(getUid(),email,login);
                 } else {
                     hideProgressDialog();
                     Log.w(TAG, "Ошибка создания аккаунта", task.getException());
@@ -130,11 +130,17 @@ public class RegistationActivity extends BaseActivity {
 
         }
     }
-    private void writeNewUser(String userId,String email,String name,int coinsAmount) {
+    private void writeNewUser(String userId, String email, String name) {
 
-        User user = new User(name,email,coinsAmount);
+        User user = new User(name,email, 0);
 
         mDatabase.child("users").child(userId).setValue(user);
+        mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("lenta").child("lenta100").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("lenta").child("lenta300").setValue(0);
+        mDatabase.child("users").child(userId).child("coupons").child("lenta").child("lenta500").setValue(0);
     }
     public void Onclick(View v){
         String repeatPassword =  RepeatPassword.getText().toString();

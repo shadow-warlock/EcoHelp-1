@@ -46,7 +46,7 @@ final class AutoFocusManager implements Camera.AutoFocusCallback {
 
   private static final String TAG = AutoFocusManager.class.getSimpleName();
 
-  protected static final long DEFAULT_AUTO_FOCUS_INTERVAL_MS = 5000L;
+  static final long DEFAULT_AUTO_FOCUS_INTERVAL_MS = 5000L;
   private static final Collection<String> FOCUS_MODES_CALLING_AF;
   private long autofocusIntervalMs = DEFAULT_AUTO_FOCUS_INTERVAL_MS;
 
@@ -78,7 +78,7 @@ final class AutoFocusManager implements Camera.AutoFocusCallback {
     autoFocusAgainLater();
   }
 
-  public void setAutofocusInterval(long autofocusIntervalMs) {
+  void setAutofocusInterval(long autofocusIntervalMs) {
     if (autofocusIntervalMs <= 0) {
       throw new IllegalArgumentException("AutoFocusInterval must be greater than 0.");
     }
@@ -138,6 +138,7 @@ final class AutoFocusManager implements Camera.AutoFocusCallback {
     }
   }
 
+  @SuppressLint("StaticFieldLeak")
   private final class AutoFocusTask extends AsyncTask<Object, Object, Object> {
     @Override protected Object doInBackground(Object... voids) {
       try {
