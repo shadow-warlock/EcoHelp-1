@@ -119,47 +119,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-
-                        Log.d(TAG, "Успешно");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference uidRef = rootRef.child("users");
+                        DatabaseReference userNameRef = rootRef.child("users").child(getUid());
                         ValueEventListener valueEventListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                HashMap uId = dataSnapshot.child(getUid()).getValue(HashMap.class);
-                                String uidString = String.valueOf(uId.hashCode());
-
-                                if (!uidString.equals(getUid())) {
-                                    writeNewUser(getUid(), account);
+                                if (!dataSnapshot.exists()) {
+                                    writeNewUser(getUid(),account);
                                 }
 
 
-                                }
-
-
-
+                            }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
-                                Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+                            Log.v(TAG,""+databaseError);
                             }
                         };
-                        uidRef.addValueEventListener(valueEventListener);
+                        userNameRef.addListenerForSingleValueEvent(valueEventListener);
+                        Log.d(TAG, "Успешно");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
 
-                    } else {
+                        }
 
-                        Log.w(TAG, "Ошибка", task.getException());
-                        updateUI(null);
-                    }
+                    else{
+
+                            Log.w(TAG, "Ошибка", task.getException());
+                            updateUI(null);
+                        }
+
 
 
                     hideProgressDialog();
 
                 });
-    }
+        }
+
+
 
 
 

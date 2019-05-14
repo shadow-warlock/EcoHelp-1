@@ -77,6 +77,10 @@ public class MenuActivity extends BaseActivity {
                 Intent intent = new Intent(this, LibraryActivity.class);
                 startActivity(intent);
             }
+            else if (i==R.id.Shop){
+                Intent intent = new Intent(this,ShopActivity.class);
+                startActivity(intent);
+            }
 
 
         }

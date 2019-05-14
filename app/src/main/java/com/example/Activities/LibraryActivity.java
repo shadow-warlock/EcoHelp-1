@@ -19,8 +19,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class LibraryActivity extends BaseActivity {
     private static final String TAG = "LibraryActivity";
+
 
 
 
@@ -30,11 +33,24 @@ List<Coupons> couponss = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
+
         RecyclerView recyclerView = findViewById(R.id.list);
         RecyclerAdapter adapter = new RecyclerAdapter(this,couponss);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
+
+
+
+
+
+
+
+
+    }
+    public void setInitialData(){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference uidRef = rootRef.child("users").child(getUid()).child("coupons");
 
@@ -43,15 +59,17 @@ List<Coupons> couponss = new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+
                 long petiarochkaAmount100 = dataSnapshot.child("petiarochka").child("petiarochka100").getValue(Long.class);
                 long petiarochkaAmount300 = dataSnapshot.child("petiarochka").child("petiarochka300").getValue(Long.class);
                 long petiarochkaAmount500 = dataSnapshot.child("petiarochka").child("petiarochka500").getValue(Long.class);
                 long lentaAmount100 = dataSnapshot.child("lenta").child("lenta100").getValue(Long.class);
                 long lentaAmount300 = dataSnapshot.child("lenta").child("lenta300").getValue(Long.class);
                 long lentaAmount500 = dataSnapshot.child("lenta").child("lenta500").getValue(Long.class);
-                for (int i = 0; i <petiarochkaAmount100 ; i++) {
-                    couponss.add(new Coupons(R.drawable.petiarochka));
 
+                Log.v("JAJJAJAJAJA",""+petiarochkaAmount100);
+                for (int i = 0; i < petiarochkaAmount100; i++) {
+                    couponss.add(new Coupons(R.drawable.petiarochka));
                 }
 
 
@@ -63,10 +81,6 @@ List<Coupons> couponss = new ArrayList<>();
             }
         };
         uidRef.addValueEventListener(valueEventListener);
-
-
-
-
 
     }
 

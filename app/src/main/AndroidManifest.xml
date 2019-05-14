@@ -20,6 +20,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,RtlEnabled"
         tools:targetApi="donut">
+        <activity android:name="com.example.Activities.ShopActivity"></activity>
         <activity android:name="com.example.Activities.RegistationActivity" />
         <activity android:name="com.example.Activities.MainActivity">
             <intent-filter>
