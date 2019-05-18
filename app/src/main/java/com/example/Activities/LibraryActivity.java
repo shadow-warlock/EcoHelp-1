@@ -39,7 +39,7 @@ List<Coupons> couponss = new ArrayList<>();
         recyclerView = findViewById(R.id.list);
 
         RecyclerAdapter adapter = new RecyclerAdapter(this,couponss);
-        adapter.notifyDataSetChanged();
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -78,6 +78,36 @@ List<Coupons> couponss = new ArrayList<>();
                 Log.v("JAJJAJAJAJA",""+petiarochkaAmount100);
                 couponss.clear();
                 for (int i = 0; i < petiarochkaAmount100; i++) {
+
+                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+
+                }
+                for (int i = 0; i < petiarochkaAmount300; i++) {
+
+                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+
+                }
+                for (int i = 0; i < petiarochkaAmount500; i++) {
+
+                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+
+                }
+                for (int i = 0; i < lentaAmount100; i++) {
+
+                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+
+                }
+                for (int i = 0; i < lentaAmount300; i++) {
+
+                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+
+                }
+                for (int i = 0; i < lentaAmount500; i++) {
 
                     couponss.add(new Coupons(R.drawable.petiarochka));
                     recyclerView.getAdapter().notifyDataSetChanged();

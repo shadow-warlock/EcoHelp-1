@@ -29,6 +29,12 @@
     <string name="title_activity_shop">ShopActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="p500">-500 рублей пятерочка</string>
+    <string name="p300">-300 рублей пятерочка</string>
+    <string name="p200">-100 рублей пятерочка</string>
+    <string name="l100">-100 рублей лента</string>
+    <string name="l300">-300 рублей лента</string>
+    <string name="l500">-500 рублей лента</string>
 
 
 </resources>
