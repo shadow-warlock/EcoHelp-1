@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
-
+import android.widget.Toast;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -42,27 +42,41 @@ public class ShopActivity extends BaseActivity {
         ad.setTitle(title);  // заголовок
         ad.setMessage(message); // сообщение
         ad.setPositiveButton(button1String, (dialog, arg1) -> {
-            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference uidRef = rootRef.child("users").child(getUid()).child("coupons");
-            ValueEventListener valueEventListener = new ValueEventListener() {
-                @SuppressWarnings("ConstantConditions")
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
+                    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                    DatabaseReference uidRef = rootRef.child("users").child(getUid());
+                    ValueEventListener valueEventListener = new ValueEventListener() {
+                        @SuppressWarnings("ConstantConditions")
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
 
-                        long petiarochkaAmount100 = snapshot.child("petiarochka").child("petiarochka100").getValue(Long.class);
-                        Log.v("Shop1111111111111111",""+petiarochkaAmount100);
-                        uidRef.getRef().child("petiarochka").child("petiarochka100").setValue(petiarochkaAmount100+1) ;
+                            long coinsAmount = snapshot.child("coinsAmount").getValue(Long.class);
+                            if (coinsAmount >= 300) {
+                                long petiarochkaAmount100 = snapshot.child("coupons").child("petiarochka").child("petiarochka100").getValue(Long.class);
+                                Log.v("Shop1111111111111111", "" + petiarochkaAmount100);
+                                uidRef.getRef().child("coupons").child("petiarochka").child("petiarochka100").setValue(petiarochkaAmount100 + 1);
+                                uidRef.getRef().child("coinsAmount").setValue(coinsAmount-300);
 
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                            } else {
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        "Недостаточно монет", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
 
-                }
-            };
-            uidRef.addListenerForSingleValueEvent(valueEventListener);
 
-        });
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+
+
+
+                    };
+                    uidRef.addListenerForSingleValueEvent(valueEventListener);
+                });
         ad.setNegativeButton(button2String, (dialog, arg1) -> {
 
         });

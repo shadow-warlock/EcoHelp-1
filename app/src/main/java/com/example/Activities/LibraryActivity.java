@@ -33,6 +33,7 @@ List<Coupons> couponss = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
+        setInitialData();
 
         RecyclerView recyclerView = findViewById(R.id.list);
         RecyclerAdapter adapter = new RecyclerAdapter(this,couponss);
