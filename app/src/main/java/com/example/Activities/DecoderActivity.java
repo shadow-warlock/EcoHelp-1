@@ -67,7 +67,7 @@ public class DecoderActivity extends Activity
   // "text" : the text encoded in QR
   // "points" : points where QR control points are placed
   @Override public void onQRCodeRead(String text, PointF[] points) {
-    resultTextView.setText(text);
+    //QR значение тут
     pointsOverlayView.setPoints(points);
   }
 
@@ -90,16 +90,17 @@ public class DecoderActivity extends Activity
     View content = getLayoutInflater().inflate(R.layout.content_decoder, mainLayout, true);
 
     qrCodeReaderView = content.findViewById(R.id.qrdecoderview);
-    resultTextView = content.findViewById(R.id.result_text_view);
+
     CheckBox flashlightCheckBox = content.findViewById(R.id.flashlight_checkbox);
-    CheckBox enableDecodingCheckBox = content.findViewById(R.id.enable_decoding_checkbox);
+
     pointsOverlayView = content.findViewById(R.id.points_overlay_view);
+
 
     qrCodeReaderView.setAutofocusInterval(2000L);
     qrCodeReaderView.setOnQRCodeReadListener(this);
     qrCodeReaderView.setBackCamera();
     flashlightCheckBox.setOnCheckedChangeListener((compoundButton, isChecked) -> qrCodeReaderView.setTorchEnabled(isChecked));
-    enableDecodingCheckBox.setOnCheckedChangeListener((compoundButton, isChecked) -> qrCodeReaderView.setQRDecodingEnabled(isChecked));
+    qrCodeReaderView.setQRDecodingEnabled(true);
     qrCodeReaderView.startCamera();
   }
   @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

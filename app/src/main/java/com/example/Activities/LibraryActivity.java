@@ -23,6 +23,7 @@ import java.util.List;
 
 public class LibraryActivity extends BaseActivity {
     private static final String TAG = "LibraryActivity";
+    private RecyclerView recyclerView;
 
 
 
@@ -35,8 +36,10 @@ List<Coupons> couponss = new ArrayList<>();
         setContentView(R.layout.activity_library);
         setInitialData();
 
-        RecyclerView recyclerView = findViewById(R.id.list);
+        recyclerView = findViewById(R.id.list);
+
         RecyclerAdapter adapter = new RecyclerAdapter(this,couponss);
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -51,9 +54,12 @@ List<Coupons> couponss = new ArrayList<>();
 
 
     }
-    public void setInitialData(){
+
+    public void  setInitialData(){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference uidRef = rootRef.child("users").child(getUid()).child("coupons");
+
+
 
         ValueEventListener valueEventListener = new ValueEventListener() {
             @SuppressWarnings("ConstantConditions")
@@ -68,9 +74,14 @@ List<Coupons> couponss = new ArrayList<>();
                 long lentaAmount300 = dataSnapshot.child("lenta").child("lenta300").getValue(Long.class);
                 long lentaAmount500 = dataSnapshot.child("lenta").child("lenta500").getValue(Long.class);
 
+
                 Log.v("JAJJAJAJAJA",""+petiarochkaAmount100);
+                couponss.clear();
                 for (int i = 0; i < petiarochkaAmount100; i++) {
+
                     couponss.add(new Coupons(R.drawable.petiarochka));
+                    recyclerView.getAdapter().notifyDataSetChanged();
+
                 }
 
 
@@ -84,6 +95,9 @@ List<Coupons> couponss = new ArrayList<>();
         uidRef.addValueEventListener(valueEventListener);
 
     }
+
+
+
 
 
 

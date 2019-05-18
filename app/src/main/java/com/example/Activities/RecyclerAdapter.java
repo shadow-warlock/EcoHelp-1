@@ -13,9 +13,13 @@ package com.example.Activities;
         import com.example.Classes.Coupons;
         import com.example.ecohelp.R;
 
+        import java.lang.reflect.Array;
+        import java.util.ArrayList;
         import java.util.List;
 
 class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+
+
     private LayoutInflater inflater;
     private List<Coupons> coupons2;
     RecyclerAdapter(Context context, List<Coupons> coupons2){
