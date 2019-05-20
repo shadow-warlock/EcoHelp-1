@@ -46,7 +46,7 @@ public class RegistationActivity extends BaseActivity {
 
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount( String email, String password) {
 
 
         Log.d(TAG, "Создание аккаунта" + email);
