@@ -1,101 +1,287 @@
 package com.example.Activities;
 
-
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.view.View;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ecohelp.R;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
-public class MenuActivity extends BaseActivity {
-    public TextView text;
-    private static final String TAG = "MenuActivity";
-
-
-
+public class MenuActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+    private TextView nick1;
+    private TextView email1;
+    private ImageView avatar1;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setContentView(R.layout.activity_menu);
-        text = findViewById(R.id.textView);
+        setContentView(R.layout.activity_test);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+         nick1 = findViewById(R.id.Nick);
+         email1 = findViewById(R.id.Email);
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference uidRef = rootRef.child("users").child(getUid());
-
         ValueEventListener valueEventListener = new ValueEventListener() {
-            @SuppressWarnings("ConstantConditions")
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String nick = dataSnapshot.child("username").getValue(String.class);
+                String email = dataSnapshot.child("account").getValue(String.class);
 
-                    long coinsAmount = dataSnapshot.child("coinsAmount").getValue(Long.class);
-                    text.setText(String.valueOf(coinsAmount));
+                nick1.setText(nick);
+                email1.setText(email);
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d(TAG, databaseError.getMessage()); //Don't ignore errors!
+
             }
         };
-        uidRef.addValueEventListener(valueEventListener);
+        uidRef.addListenerForSingleValueEvent(valueEventListener);
 
+
+
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
     }
 
+    public void onMapReady(GoogleMap googleMap) {
 
-        public void onClick1(View v) {
-            int i = v.getId();
-            if (i == R.id.map) {
-                Intent intent = new Intent(this, MapsActivity.class);
-                startActivity(intent);
-            } else if (i == R.id.signOut) {
-              FirebaseAuth.getInstance().signOut();
-              Intent intent = new Intent(this, MainActivity.class);
-              startActivity(intent);
-              finish();
-            }
-            else if (i==R.id.QR){
-              Intent intent = new Intent(this, DecoderActivity.class);
-              startActivity(intent);
+//ВкусВилл
+        LatLng VkusVill1 = new LatLng(60.079938, 30.344437);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill1).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill1));
+
+        LatLng VkusVill4 = new LatLng(60.000551, 30.207977);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill4).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill4));
+
+        LatLng VkusVill5 = new LatLng(55.567593, 37.573666);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill5).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill5));
+
+        LatLng VkusVill6 = new LatLng(55.679970, 37.451393);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill6).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill6));
+
+        LatLng VkusVill7 = new LatLng(55.696925, 37.554020);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill7).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill7));
+
+        LatLng VkusVill8 = new LatLng(55.546288, 37.555566);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill8).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill8));
+
+        LatLng VkusVill9 = new LatLng(55.734125, 37.416472);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill9).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill9));
+
+        LatLng VkusVill10 = new LatLng(55.744790, 37.546410);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill10).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill10));
+
+        LatLng VkusVill11 = new LatLng(55.684778, 37.541695);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill11).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill11));
+
+        LatLng VkusVill12 = new LatLng(55.568050, 37.566271);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill12).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill12));
+
+        LatLng VkusVill13 = new LatLng(55.675662, 37.270045);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill13).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill13));
+
+        LatLng VkusVill14 = new LatLng(55.737645, 37.433969);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill14).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill14));
+
+        LatLng VkusVill15 = new LatLng(55.817379, 37.368374);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill15).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill15));
+
+        LatLng VkusVill151 = new LatLng(55.669983, 37.476756);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill151).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill151));
+
+        LatLng VkusVill161 = new LatLng(55.723745, 37.437078);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill161).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill161));
+
+        LatLng VkusVill16 = new LatLng(55.743716, 37.863202);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill16).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill16));
+
+        LatLng VkusVill17 = new LatLng(55.653454, 37.766513);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill17).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill17));
+
+        LatLng VkusVill81 = new LatLng(55.714097, 37.521142);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill81).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill81));
+
+        LatLng VkusVill19 = new LatLng(55.675604, 37.505946);
+        googleMap.addMarker(new MarkerOptions().position(VkusVill19).title("ВкусВилл"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(VkusVill19));
 
 
 
-            }
-            else if (i==R.id.menu){
-                Intent intent = new Intent(this, LibraryActivity.class);
-                startActivity(intent);
-            }
-            else if (i==R.id.Shop){
-                Intent intent = new Intent(this,ShopActivity.class);
-                startActivity(intent);
-            }
+//Лента
+        LatLng Lenta1 = new LatLng(60.039242, 30.239496);
+        googleMap.addMarker(new MarkerOptions().position(Lenta1).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta1));
+
+        LatLng Lenta2 = new LatLng(59.998849, 30.234427);
+        googleMap.addMarker(new MarkerOptions().position(Lenta2).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta2));
+
+        LatLng Lenta3 = new LatLng(59.798798, 30.399273);
+        googleMap.addMarker(new MarkerOptions().position(Lenta3).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta3));
+
+        LatLng Lenta4 = new LatLng(60.022551, 30.293120);
+        googleMap.addMarker(new MarkerOptions().position(Lenta4).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta4));
+
+        LatLng Lenta5 = new LatLng(59.807094, 30.162162);
+        googleMap.addMarker(new MarkerOptions().position(Lenta5).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta5));
+
+        LatLng Lenta6 = new LatLng(59.808106, 30.3202447);
+        googleMap.addMarker(new MarkerOptions().position(Lenta6).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta6));
+
+        LatLng Lenta7 = new LatLng(59.851757, 30.093918);
+        googleMap.addMarker(new MarkerOptions().position(Lenta7).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta7));
+
+        LatLng Lenta8 = new LatLng(59.849890, 30.397765);
+        googleMap.addMarker(new MarkerOptions().position(Lenta8).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta8));
+
+        LatLng Lenta9 = new LatLng(59.984555, 30.226239);
+        googleMap.addMarker(new MarkerOptions().position(Lenta9).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta9));
+
+        LatLng Lenta10 = new LatLng(60.031321, 30.434551);
+        googleMap.addMarker(new MarkerOptions().position(Lenta10).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta10));
+
+        LatLng Lenta11 = new LatLng(59.989793, 30.439002);
+        googleMap.addMarker(new MarkerOptions().position(Lenta11).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta11));
+
+        LatLng Lenta12 = new LatLng(55.566387, 37.690194);
+        googleMap.addMarker(new MarkerOptions().position(Lenta12).title("Лента"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Lenta12));
+//Просто Ярославль
+
+        LatLng Yaroslavl1 = new LatLng(57.574012, 39.920637);
+        googleMap.addMarker(new MarkerOptions().position(Yaroslavl1).title("Пункт Сдачи"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Yaroslavl1));
+
+        LatLng Yaroslavl2 = new LatLng(57.670062, 39.838068);
+        googleMap.addMarker(new MarkerOptions().position(Yaroslavl2).title("Пункт Сдачи"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(Yaroslavl2));
 
 
-        }
-    private static long back_pressed;
+
+    }
 
     @Override
     public void onBackPressed() {
-        if (back_pressed + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed();
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            Toast.makeText(getBaseContext(), "Нажмите еще раз для выхода", Toast.LENGTH_SHORT).show();
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.test, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
 
-        back_pressed = System.currentTimeMillis();
-    }
+        return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
+        if (id == R.id.nav_home) {
+
+            Intent intent = new Intent(this, DecoderActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(this, ShopActivity.class);
+            startActivity(intent);
+
+
+        } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(this, LibraryActivity.class);
+            startActivity(intent);
+
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+}

@@ -2,12 +2,13 @@ package com.example.Activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
 

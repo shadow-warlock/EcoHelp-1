@@ -109,7 +109,7 @@ List<Coupons> couponss = new ArrayList<>();
                 }
                 for (int i = 0; i < lentaAmount500; i++) {
 
-                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    couponss.add(new Coupons(R.drawable.oqv4xgiwvzg));
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }

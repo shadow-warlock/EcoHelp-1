@@ -2,6 +2,7 @@ package com.example.Activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,9 +81,13 @@ public class DecoderActivity extends BaseActivity
   // Called when a QR is decoded
   // "text" : the text encoded in QR
   // "points" : points where QR control points are placed
+  String text;
+
   @Override
   public void onQRCodeRead(String text, PointF[] points) {
     pointsOverlayView.setPoints(points);
+
+
 
     DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference coinsUidRef = rootRef.child("coinsUid").child(text);
@@ -91,15 +97,23 @@ public class DecoderActivity extends BaseActivity
       @SuppressWarnings("ConstantConditions")
       @Override
       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        Log.v(text,""+dataSnapshot);
+        Log.v(text, "" + dataSnapshot);
         if (!dataSnapshot.exists()) {
 
+          Toast toast = Toast.makeText(getApplicationContext(),
+                  "QRCode неверен! Попробуйте ещё раз", Toast.LENGTH_SHORT);
+          toast.show();
 
           ShowToastTask toastTask = new ShowToastTask();
           toastTask.execute();
-
-
-
+          AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
+          builder.setTitle("Информация")
+                  .setMessage("QR Code уже считан или неверен")
+                  .setCancelable(false)
+                  .setNegativeButton("ОК",
+                          (dialog, id) -> dialog.cancel());
+          AlertDialog alert = builder.create();
+          alert.show();
 
 
 
@@ -115,6 +129,14 @@ public class DecoderActivity extends BaseActivity
               long coinsAmount = dataSnapshot.getValue(Long.class);
               coinsAmountRef.getRef().setValue(coinsAmount + qrCoinsAmount);
               coinsUidRef.removeValue();
+              AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
+              builder.setTitle("Информация")
+                      .setMessage("QR Code успешно считан и вам начислено"+ qrCoinsAmount)
+                      .setCancelable(false)
+                      .setNegativeButton("ОК",
+                              (dialog, id) -> dialog.cancel());
+              AlertDialog alert = builder.create();
+              alert.show();
             }
 
             @Override
@@ -123,6 +145,7 @@ public class DecoderActivity extends BaseActivity
             }
           };
           coinsAmountRef.addListenerForSingleValueEvent(valueEventListener);
+
 
 
         }
@@ -135,10 +158,12 @@ public class DecoderActivity extends BaseActivity
 
       }
 
+
     };
     coinsUidRef.addListenerForSingleValueEvent(valueEventListener);
-
-    }
+    Intent intent = new Intent(this,MenuActivity.class);
+    startActivity(intent);
+  }
 
 
   private void requestCameraPermission() {

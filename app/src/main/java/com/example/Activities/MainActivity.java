@@ -2,6 +2,7 @@ package com.example.Activities;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -24,8 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.HashMap;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Registration";
@@ -109,6 +108,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Log.d(TAG, "Аутентификация" + acct.getId());
 
          String account = acct.getEmail();
+         Uri GoogleAvatar = acct.getPhotoUrl();
+         String username = acct.getDisplayName();
 
 
 
@@ -125,7 +126,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (!dataSnapshot.exists()) {
-                                    writeNewUser(getUid(),account);
+                                    writeNewUser(getUid(),account,GoogleAvatar,username);
+
                                 }
 
 
@@ -167,11 +169,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    private void writeNewUser(String userId, String account) {
+    private void writeNewUser(String userId, String account,Uri avatar,String username) {
 
         GoogleUser user = new GoogleUser(account, 0);
 
         mDatabase.child("users").child(userId).setValue(user);
+        mDatabase.child("users").child(userId).child("GoogleAvatar").setValue(avatar.toString());
+        mDatabase.child("users").child(userId).child("username").setValue(username);
+
         mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
         mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
         mDatabase.child("users").child(userId).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);

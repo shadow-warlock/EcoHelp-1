@@ -20,7 +20,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,RtlEnabled"
         tools:targetApi="donut">
-        <activity android:name="com.example.Activities.ShopActivity"></activity>
+        <activity android:name="com.example.Activities.SettingsActivity"></activity>
+        <activity
+            android:name="com.example.Activities.MenuActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.example.Activities.ShopActivity" />
         <activity android:name="com.example.Activities.RegistationActivity" />
         <activity android:name="com.example.Activities.MainActivity">
             <intent-filter>
@@ -35,16 +40,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name="com.example.Activities.MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name="com.example.Activities.MenuActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <activity android:name="com.example.Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
