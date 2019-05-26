@@ -48,7 +48,7 @@ public class ShopActivity extends BaseActivity {
         adp100.setMessage(message); // сообщение
         adp100.setPositiveButton(button1String, (dialog, arg1) -> {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference uidRef = rootRef.child("users").child(getUid());
+            DatabaseReference uidRef = rootRef.child("users").child(getuid());
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @SuppressWarnings("ConstantConditions")
                 @Override
@@ -94,7 +94,7 @@ public class ShopActivity extends BaseActivity {
         adp300.setMessage(message); // сообщение
         adp300.setPositiveButton(button1String, (dialog, arg1) -> {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference uidRef = rootRef.child("users").child(getUid());
+            DatabaseReference uidRef = rootRef.child("users").child(getuid());
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @SuppressWarnings("ConstantConditions")
                 @Override
@@ -138,7 +138,7 @@ public class ShopActivity extends BaseActivity {
         adp500.setMessage(message); // сообщение
         adp500.setPositiveButton(button1String, (dialog, arg1) -> {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference uidRef = rootRef.child("users").child(getUid());
+            DatabaseReference uidRef = rootRef.child("users").child(getuid());
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @SuppressWarnings("ConstantConditions")
                 @Override
@@ -182,7 +182,7 @@ public class ShopActivity extends BaseActivity {
         adl100.setMessage(message); // сообщение
         adl100.setPositiveButton(button1String, (dialog, arg1) -> {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference uidRef = rootRef.child("users").child(getUid());
+            DatabaseReference uidRef = rootRef.child("users").child(getuid());
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @SuppressWarnings("ConstantConditions")
                 @Override
@@ -226,7 +226,7 @@ public class ShopActivity extends BaseActivity {
         adl300.setMessage(message); // сообщение
         adl300.setPositiveButton(button1String, (dialog, arg1) -> {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference uidRef = rootRef.child("users").child(getUid());
+            DatabaseReference uidRef = rootRef.child("users").child(getuid());
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @SuppressWarnings("ConstantConditions")
                 @Override
@@ -270,7 +270,7 @@ public class ShopActivity extends BaseActivity {
         adl500.setMessage(message); // сообщение
         adl500.setPositiveButton(button1String, (dialog, arg1) -> {
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference uidRef = rootRef.child("users").child(getUid());
+            DatabaseReference uidRef = rootRef.child("users").child(getuid());
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @SuppressWarnings("ConstantConditions")
                 @Override

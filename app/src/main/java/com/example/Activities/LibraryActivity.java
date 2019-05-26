@@ -57,7 +57,7 @@ List<Coupons> couponss = new ArrayList<>();
 
     public void  setInitialData(){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference uidRef = rootRef.child("users").child(getUid()).child("coupons");
+        DatabaseReference uidRef = rootRef.child("users").child(getuid()).child("coupons");
 
 
 

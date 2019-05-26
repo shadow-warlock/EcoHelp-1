@@ -1,19 +1,18 @@
 package com.example.Activities;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+import android.util.Log;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ImageView;
@@ -32,11 +31,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.InputStream;
+
 public class MenuActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
     private TextView nick1;
     private TextView email1;
-    private ImageView avatar1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +47,19 @@ public class MenuActivity extends BaseActivity
          nick1 = findViewById(R.id.Nick);
          email1 = findViewById(R.id.Email);
 
+
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference uidRef = rootRef.child("users").child(getUid());
+        DatabaseReference uidRef = rootRef.child("users").child(getuid());
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String nick = dataSnapshot.child("username").getValue(String.class);
                 String email = dataSnapshot.child("account").getValue(String.class);
+                String avatar = dataSnapshot.child("GoogleAvatar").getValue(String.class);
 
                 nick1.setText(nick);
                 email1.setText(email);
+                new DownloadImageTask(findViewById(R.id.avatar)).execute(avatar);
 
             }
 
@@ -83,6 +86,32 @@ public class MenuActivity extends BaseActivity
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
     }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
+
 
     public void onMapReady(GoogleMap googleMap) {
 

@@ -1,8 +1,6 @@
 package com.example.Activities;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
@@ -16,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 
 import android.widget.TextView;
@@ -113,14 +112,16 @@ public class DecoderActivity extends BaseActivity
                   .setNegativeButton("ОК",
                           (dialog, id) -> dialog.cancel());
           AlertDialog alert = builder.create();
+          alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
           alert.show();
+
 
 
 
         }
         else {
           long qrCoinsAmount = dataSnapshot.getValue(Long.class);
-          DatabaseReference coinsAmountRef = rootRef.child("users").child(getUid()).child("coinsAmount");
+          DatabaseReference coinsAmountRef = rootRef.child("users").child(getuid()).child("coinsAmount");
           ValueEventListener valueEventListener = new ValueEventListener() {
 
 
@@ -136,6 +137,7 @@ public class DecoderActivity extends BaseActivity
                       .setNegativeButton("ОК",
                               (dialog, id) -> dialog.cancel());
               AlertDialog alert = builder.create();
+              alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
               alert.show();
             }
 
