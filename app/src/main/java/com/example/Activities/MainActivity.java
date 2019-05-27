@@ -69,8 +69,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onStart() {
         super.onStart();
 
-        FirebaseUser
-                user = mAuth.getCurrentUser();
+        FirebaseUser user = mAuth.getCurrentUser();
         updateUI(user);
     }
     private void updateUI(FirebaseUser user) {
@@ -122,7 +121,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference userNameRef = rootRef.child("users").child(getuid());
+                        DatabaseReference userNameRef = rootRef.child("users").child(getUid());
                         ValueEventListener valueEventListener = new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -174,15 +173,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         GoogleUser user = new GoogleUser(account, 0);
 
-        mDatabase.child("users").child(getuid()).setValue(user);
-        mDatabase.child("users").child(getuid()).child("GoogleAvatar").setValue(avatar.toString());
-        mDatabase.child("users").child(getuid()).child("username").setValue(username);
-        mDatabase.child("users").child(getuid()).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("lenta").child("lenta100").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("lenta").child("lenta300").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("lenta").child("lenta500").setValue(0);
+        mDatabase.child("users").child(getUid()).setValue(user);
+        mDatabase.child("users").child(getUid()).child("GoogleAvatar").setValue(avatar.toString());
+        mDatabase.child("users").child(getUid()).child("GoogleAvatarRezerv").setValue(avatar.toString());
+        mDatabase.child("users").child(getUid()).child("username").setValue(username);
+        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta100").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta300").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta500").setValue(0);
     }
 
 

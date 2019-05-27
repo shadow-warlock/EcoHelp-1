@@ -6,45 +6,46 @@
     android:layout_height="match_parent"
     tools:context="com.example.Activities.ShopActivity">
 
+    <include
+        android:id="@+id/mytoolbar"
+        layout="@layout/toolbar" />
+
+
     <Button
         android:id="@+id/petiarochka500"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:onClick="onClick"
         android:text="@string/p500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.014" />
+        app:layout_constraintVertical_bias="0.12" />
 
     <Button
         android:id="@+id/petiarochka300"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:onClick="onClick"
         android:text="@string/p300"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/petiarochka500"
-        app:layout_constraintVertical_bias="0.049" />
+        app:layout_constraintVertical_bias="0.195" />
 
     <Button
         android:id="@+id/lenta500"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:onClick="onClick"
         android:text="@string/l500"
         app:layout_constraintEnd_toStartOf="@+id/petiarochka500"
@@ -57,38 +58,34 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="onClick"
         android:text="@string/l300"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/petiarochka300"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lenta500"
-        app:layout_constraintVertical_bias="0.068" />
+        app:layout_constraintVertical_bias="0.194" />
 
     <Button
         android:id="@+id/lenta100"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="onClick"
         android:text="@string/l100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/petiarochka100"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lenta300"
-        app:layout_constraintVertical_bias="0.325" />
+        app:layout_constraintVertical_bias="0.719" />
 
     <Button
         android:id="@+id/petiarochka100"
@@ -96,12 +93,14 @@
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="onClick"
         android:text="@string/p200"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/petiarochka300"
-        app:layout_constraintVertical_bias="0.361" />
+        app:layout_constraintVertical_bias="0.764" />
+
+
+
 </android.support.constraint.ConstraintLayout>

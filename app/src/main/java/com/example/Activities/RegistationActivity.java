@@ -133,14 +133,15 @@ public class RegistationActivity extends BaseActivity {
     private void writeNewUser( String email, String name) {
 
         User user = new User(name,email, 0);
-
-        mDatabase.child("users").child(getuid()).setValue(user);
-        mDatabase.child("users").child(getuid()).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("lenta").child("lenta100").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("lenta").child("lenta300").setValue(0);
-        mDatabase.child("users").child(getuid()).child("coupons").child("lenta").child("lenta500").setValue(0);
+        mDatabase.child("users").child(getUid()).child("GoogleAvatar").setValue("https://lh5.googleusercontent.com/-T2wipXlGaik/AAAAAAAAAAI/AAAAAAAAFgg/wK7J3wC4N30/s96-c/photo.jpg");
+        mDatabase.child("users").child(getUid()).child("GoogleAvatarRezerv").setValue("https://lh5.googleusercontent.com/-T2wipXlGaik/AAAAAAAAAAI/AAAAAAAAFgg/wK7J3wC4N30/s96-c/photo.jpg");
+        mDatabase.child("users").child(getUid()).setValue(user);
+        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta100").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta300").setValue(0);
+        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta500").setValue(0);
     }
     public void Onclick(View v){
         String repeatPassword =  RepeatPassword.getText().toString();

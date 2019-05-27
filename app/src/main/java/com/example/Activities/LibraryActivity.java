@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 
@@ -24,6 +25,8 @@ import java.util.List;
 public class LibraryActivity extends BaseActivity {
     private static final String TAG = "LibraryActivity";
     private RecyclerView recyclerView;
+    private Toolbar toolbar;
+
 
 
 
@@ -34,6 +37,12 @@ List<Coupons> couponss = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
+        toolbar = findViewById(R.id.mytoolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         setInitialData();
 
         recyclerView = findViewById(R.id.list);
@@ -46,18 +55,16 @@ List<Coupons> couponss = new ArrayList<>();
 
 
 
-
-
-
-
-
-
-
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();  //или this.finish или что то свое
+        return true;
     }
 
     public void  setInitialData(){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference uidRef = rootRef.child("users").child(getuid()).child("coupons");
+        DatabaseReference uidRef = rootRef.child("users").child(getUid()).child("coupons");
 
 
 
@@ -109,7 +116,7 @@ List<Coupons> couponss = new ArrayList<>();
                 }
                 for (int i = 0; i < lentaAmount500; i++) {
 
-                    couponss.add(new Coupons(R.drawable.oqv4xgiwvzg));
+                    couponss.add(new Coupons(R.drawable.qedgp5xjytu));
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }

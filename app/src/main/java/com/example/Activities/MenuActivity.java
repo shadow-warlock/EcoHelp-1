@@ -35,46 +35,20 @@ import java.io.InputStream;
 
 public class MenuActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
-    private TextView nick1;
-    private TextView email1;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-         nick1 = findViewById(R.id.Nick);
-         email1 = findViewById(R.id.Email);
-
-
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference uidRef = rootRef.child("users").child(getuid());
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String nick = dataSnapshot.child("username").getValue(String.class);
-                String email = dataSnapshot.child("account").getValue(String.class);
-                String avatar = dataSnapshot.child("GoogleAvatar").getValue(String.class);
-
-                nick1.setText(nick);
-                email1.setText(email);
-                new DownloadImageTask(findViewById(R.id.avatar)).execute(avatar);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        uidRef.addListenerForSingleValueEvent(valueEventListener);
-
-
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        TextView nick1 = navigationView.getHeaderView(0).findViewById(R.id.NickMenuActivity);
+        TextView email1 = navigationView.getHeaderView(0).findViewById(R.id.EmailMenuActivity);
+        ImageView avataroffline = navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -85,6 +59,100 @@ public class MenuActivity extends BaseActivity
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
+
+        String RedSignal = getIntent().getStringExtra("BackToRezerv");
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference uidRef = rootRef.child("users").child(getUid());
+
+        Log.i("deecode",getUid());
+        ValueEventListener valueEventListener2 = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String nick = dataSnapshot.child("username").getValue(String.class);
+                String email = dataSnapshot.child("account").getValue(String.class);
+                String Avatar = dataSnapshot.child("GoogleAvatar").getValue(String.class);
+                nick1.setText(nick);
+                email1.setText(email);
+                if (Avatar.length() >= 2) {
+
+
+                    new DownloadImageTask(navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity)).execute(Avatar);
+
+                }
+                if (RedSignal!= null){
+                    String AvatarRezerv = dataSnapshot.child("GoogleAvatarRezerv").getValue(String.class);
+                    new DownloadImageTask(navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity)).execute(AvatarRezerv);
+                }
+                else {
+                    if (Avatar.equals("1")) {
+                        avataroffline.setImageResource(R.drawable.boy1);
+
+
+                    }
+                    if (Avatar.equals("2")) {
+                        avataroffline.setImageResource(R.drawable.boy_1);
+
+                    }
+
+                    if (Avatar.equals("4")) {
+                        avataroffline.setImageResource(R.drawable.girl_1);
+
+                    }
+                    if (Avatar.equals("5")) {
+                        avataroffline.setImageResource(R.drawable.man);
+
+                    }
+                    if (Avatar.equals("7")) {
+                        avataroffline.setImageResource(R.drawable.man_2);
+
+                    }
+                    if (Avatar.equals("8")) {
+                        avataroffline.setImageResource(R.drawable.man_3);
+
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        uidRef.addValueEventListener(valueEventListener2);
+
+
+
+
+
+
+
+
+
+
+
+Log.v("dwdwdwdwd",""+getIntent());
+        int count = getIntent().getIntExtra("Avatar", 0);
+        Log.v("dwdwdwdwd",""+count);
+
+        if (count != 0) {
+
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    uidRef.child("GoogleAvatar").setValue(""+count);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            uidRef.addListenerForSingleValueEvent(valueEventListener);
+
+
+
+        }
     }
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -282,7 +350,10 @@ public class MenuActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+
+
         }
 
         return super.onOptionsItemSelected(item);

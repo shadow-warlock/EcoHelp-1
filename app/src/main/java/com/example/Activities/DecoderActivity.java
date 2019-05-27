@@ -11,10 +11,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 
 import android.widget.TextView;
@@ -35,8 +35,10 @@ public class DecoderActivity extends BaseActivity
     implements ActivityCompat.OnRequestPermissionsResultCallback, QRCodeReaderView.OnQRCodeReadListener {
 
   private static final int MY_PERMISSION_REQUEST_CAMERA = 0;
+  private Toolbar toolbar;
 
   private ViewGroup mainLayout;
+
 
   private TextView resultTextView;
   private QRCodeReaderView qrCodeReaderView;
@@ -48,7 +50,17 @@ public class DecoderActivity extends BaseActivity
 
     setContentView(R.layout.activity_decoder);
 
+
+
     mainLayout = findViewById(R.id.main_layout);
+    toolbar = findViewById(R.id.mytoolbar);
+    setSupportActionBar(toolbar);
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      getSupportActionBar().setDisplayShowHomeEnabled(true);
+      getSupportActionBar().setTitle("EcoHelp");
+    }
+
 
     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             == PackageManager.PERMISSION_GRANTED) {
@@ -56,6 +68,11 @@ public class DecoderActivity extends BaseActivity
     } else {
       requestCameraPermission();
     }
+  }
+  @Override
+  public boolean onSupportNavigateUp() {
+    onBackPressed();  //или this.finish или что то свое
+    return true;
   }
 
   @Override
@@ -80,11 +97,14 @@ public class DecoderActivity extends BaseActivity
   // Called when a QR is decoded
   // "text" : the text encoded in QR
   // "points" : points where QR control points are placed
-  String text;
+
+
 
   @Override
   public void onQRCodeRead(String text, PointF[] points) {
+
     pointsOverlayView.setPoints(points);
+
 
 
 
@@ -103,8 +123,6 @@ public class DecoderActivity extends BaseActivity
                   "QRCode неверен! Попробуйте ещё раз", Toast.LENGTH_SHORT);
           toast.show();
 
-          ShowToastTask toastTask = new ShowToastTask();
-          toastTask.execute();
           AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
           builder.setTitle("Информация")
                   .setMessage("QR Code уже считан или неверен")
@@ -112,16 +130,16 @@ public class DecoderActivity extends BaseActivity
                   .setNegativeButton("ОК",
                           (dialog, id) -> dialog.cancel());
           AlertDialog alert = builder.create();
-          alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
           alert.show();
 
 
 
 
         }
+
         else {
           long qrCoinsAmount = dataSnapshot.getValue(Long.class);
-          DatabaseReference coinsAmountRef = rootRef.child("users").child(getuid()).child("coinsAmount");
+          DatabaseReference coinsAmountRef = rootRef.child("users").child(getUid()).child("coinsAmount");
           ValueEventListener valueEventListener = new ValueEventListener() {
 
 
@@ -132,13 +150,19 @@ public class DecoderActivity extends BaseActivity
               coinsUidRef.removeValue();
               AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
               builder.setTitle("Информация")
-                      .setMessage("QR Code успешно считан и вам начислено"+ qrCoinsAmount)
+                      .setMessage("QR Code успешно считан и вам начислено"+qrCoinsAmount)
                       .setCancelable(false)
                       .setNegativeButton("ОК",
                               (dialog, id) -> dialog.cancel());
               AlertDialog alert = builder.create();
-              alert.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
               alert.show();
+              try {
+                Thread.sleep(10000);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+
+
             }
 
             @Override
@@ -163,8 +187,15 @@ public class DecoderActivity extends BaseActivity
 
     };
     coinsUidRef.addListenerForSingleValueEvent(valueEventListener);
+
+    try {
+      Thread.sleep(10000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     Intent intent = new Intent(this,MenuActivity.class);
     startActivity(intent);
+
   }
 
 
@@ -187,8 +218,11 @@ public class DecoderActivity extends BaseActivity
     View content = getLayoutInflater().inflate(R.layout.content_decoder, mainLayout, true);
 
     qrCodeReaderView = content.findViewById(R.id.qrdecoderview);
-
     CheckBox flashlightCheckBox = content.findViewById(R.id.flashlight_checkbox);
+    flashlightCheckBox.setOnCheckedChangeListener((compoundButton, isChecked) -> qrCodeReaderView.setTorchEnabled(isChecked));
+
+
+
 
     pointsOverlayView = content.findViewById(R.id.points_overlay_view);
 
@@ -196,7 +230,7 @@ public class DecoderActivity extends BaseActivity
     qrCodeReaderView.setAutofocusInterval(2000L);
     qrCodeReaderView.setOnQRCodeReadListener(this);
     qrCodeReaderView.setBackCamera();
-    flashlightCheckBox.setOnCheckedChangeListener((compoundButton, isChecked) -> qrCodeReaderView.setTorchEnabled(isChecked));
+
     qrCodeReaderView.setQRDecodingEnabled(true);
     qrCodeReaderView.startCamera();
   }
@@ -238,4 +272,5 @@ public class DecoderActivity extends BaseActivity
     }
 
   }
+
 }
