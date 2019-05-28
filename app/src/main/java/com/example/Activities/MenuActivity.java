@@ -60,7 +60,7 @@ public class MenuActivity extends BaseActivity
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-        String RedSignal = getIntent().getStringExtra("BackToRezerv");
+        final String[] RedSignal = {getIntent().getStringExtra("BackToRezerv")};
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference uidRef = rootRef.child("users").child(getUid());
 
@@ -79,23 +79,31 @@ public class MenuActivity extends BaseActivity
                     new DownloadImageTask(navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity)).execute(Avatar);
 
                 }
-                if (RedSignal!= null){
+                if (RedSignal[0] != null){
+
                     String AvatarRezerv = dataSnapshot.child("GoogleAvatarRezerv").getValue(String.class);
-                    new DownloadImageTask(navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity)).execute(AvatarRezerv);
+                    uidRef.child("GoogleAvatar").setValue(AvatarRezerv);
+
+                    new DownloadImageTask(navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity)).execute(Avatar);
+                    RedSignal[0] = null;
                 }
-                else {
+                if(Avatar.length()<=1) {
+
                     if (Avatar.equals("1")) {
                         avataroffline.setImageResource(R.drawable.boy1);
+                        uidRef.child("GoogleAvatar").setValue(""+Avatar);
 
 
                     }
                     if (Avatar.equals("2")) {
                         avataroffline.setImageResource(R.drawable.boy_1);
+                        uidRef.child("GoogleAvatar").setValue(""+Avatar);
 
                     }
 
                     if (Avatar.equals("4")) {
                         avataroffline.setImageResource(R.drawable.girl_1);
+                        uidRef.child("GoogleAvatar").setValue(""+Avatar);
 
                     }
                     if (Avatar.equals("5")) {

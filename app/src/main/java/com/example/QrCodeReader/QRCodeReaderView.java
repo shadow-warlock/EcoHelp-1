@@ -390,15 +390,21 @@ public class QRCodeReaderView extends SurfaceView
             super.onPostExecute(result);
 
 
+
+
+
+
             final QRCodeReaderView view = viewRef.get();
 
             // Notify we found a QRCode
+
             if (view != null && result != null && view.mOnQRCodeReadListener != null) {
 
                 // Transform resultPoints to View coordinates
                 final PointF[] transformedPoints =
                         transformToViewCoordinates(view, result.getResultPoints());
                 view.mOnQRCodeReadListener.onQRCodeRead(result.getText(), transformedPoints);
+
 
             }
         }

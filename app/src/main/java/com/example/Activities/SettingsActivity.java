@@ -42,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
         if (i == R.id.button2) {
             Intent intent = new Intent(this, MenuActivity.class);
-            intent.putExtra("BackToRezerv", "SOS");
+            intent.putExtra("BackToRezerv", "0");
             startActivity(intent);
         }
         if (i == R.id.button3){

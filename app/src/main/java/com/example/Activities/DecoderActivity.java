@@ -1,6 +1,7 @@
 package com.example.Activities;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
@@ -29,6 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class DecoderActivity extends BaseActivity
@@ -92,7 +96,7 @@ public class DecoderActivity extends BaseActivity
       qrCodeReaderView.stopCamera();
     }
   }
-
+  public AlertDialog alert;
 
   // Called when a QR is decoded
   // "text" : the text encoded in QR
@@ -119,18 +123,30 @@ public class DecoderActivity extends BaseActivity
         Log.v(text, "" + dataSnapshot);
         if (!dataSnapshot.exists()) {
 
-          Toast toast = Toast.makeText(getApplicationContext(),
-                  "QRCode неверен! Попробуйте ещё раз", Toast.LENGTH_SHORT);
-          toast.show();
 
-          AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
-          builder.setTitle("Информация")
-                  .setMessage("QR Code уже считан или неверен")
-                  .setCancelable(false)
-                  .setNegativeButton("ОК",
-                          (dialog, id) -> dialog.cancel());
-          AlertDialog alert = builder.create();
-          alert.show();
+
+
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
+            builder.setTitle("Информация")
+                    .setMessage("QR Code уже считан или неверен")
+                    .setCancelable(false)
+                    .setNegativeButton("ОК",
+                            (dialog, id) -> {
+
+
+                              Intent intent = new Intent(DecoderActivity.this, MenuActivity.class);
+                              startActivity(intent);
+                            });
+            final AlertDialog alert = builder.create();
+            alert.show();
+            qrCodeReaderView.setQRDecodingEnabled(false);
+            Log.v("sSDDe", "Sqsqsqs");
+
+
+
+
 
 
 
@@ -153,17 +169,15 @@ public class DecoderActivity extends BaseActivity
                       .setMessage("QR Code успешно считан и вам начислено"+qrCoinsAmount)
                       .setCancelable(false)
                       .setNegativeButton("ОК",
-                              (dialog, id) -> dialog.cancel());
-              AlertDialog alert = builder.create();
-              alert.show();
-              try {
-                Thread.sleep(10000);
-              } catch (InterruptedException e) {
-                e.printStackTrace();
-              }
-
-
+                              (dialog, id) -> {
+                                Intent intent = new Intent(DecoderActivity.this, MenuActivity.class);
+                                startActivity(intent);
+                                AlertDialog alert = builder.create();
+                                alert.show();
+                                qrCodeReaderView.setQRDecodingEnabled(false);
+                              });
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -188,13 +202,7 @@ public class DecoderActivity extends BaseActivity
     };
     coinsUidRef.addListenerForSingleValueEvent(valueEventListener);
 
-    try {
-      Thread.sleep(10000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    Intent intent = new Intent(this,MenuActivity.class);
-    startActivity(intent);
+
 
   }
 
@@ -248,29 +256,6 @@ public class DecoderActivity extends BaseActivity
               .show();
     }
   }
-  class ShowToastTask extends AsyncTask<Void, Void, Void> {
 
-    @Override
-    protected Void doInBackground(Void... voids) {
-      try{
-
-
-          TimeUnit.SECONDS.sleep(5);
-          runOnUiThread(() -> {
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "QRCode неверен! Попробуйте ещё раз", Toast.LENGTH_SHORT);
-            toast.show();
-          });
-
-
-
-      }catch (InterruptedException e){
-        e.printStackTrace();
-      }
-
-      return null;
-    }
-
-  }
 
 }
