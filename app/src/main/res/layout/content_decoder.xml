@@ -22,16 +22,15 @@
         />
 
     <CheckBox
-        android:background="#99000000"
+        android:id="@+id/flashlight_checkbox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="On/Off flashlight"
         android:layout_alignParentBottom="true"
-        android:textSize="14sp"
-        android:padding="16dp"
-        android:textColor="#ffffff"
-        android:id="@+id/flashlight_checkbox"
+        android:background="#99000000"
         android:checked="false"
-        />
+        android:padding="16dp"
+        android:text="On/Off flashlight"
+        android:textColor="#ffffff"
+        android:textSize="14sp" />
 
 </RelativeLayout>

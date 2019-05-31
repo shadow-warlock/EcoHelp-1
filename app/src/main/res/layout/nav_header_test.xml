@@ -29,7 +29,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/EmailMenuActivity"
+        android:id="@+id/coinsAmountMenuActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="goshan164@gmail.com" />

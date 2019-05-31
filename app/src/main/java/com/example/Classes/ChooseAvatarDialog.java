@@ -1,8 +1,10 @@
 package com.example.Classes;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,11 +17,11 @@ import com.example.ecohelp.R;
 public class ChooseAvatarDialog extends DialogFragment implements View.OnClickListener {
 
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle("Title!");
-        View v = inflater.inflate(R.layout.choose_avatar_dialog, null);
-        v.findViewById(R.id.imageView5).setOnClickListener(this);
-        v.findViewById(R.id.imageView6).setOnClickListener(this);
+        @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.choose_avatar_dialog, null);
+        v.findViewById(R.id.achievment2).setOnClickListener(this);
+        v.findViewById(R.id.achievment1).setOnClickListener(this);
         v.findViewById(R.id.imageView8).setOnClickListener(this);
         v.findViewById(R.id.imageView9).setOnClickListener(this);
         v.findViewById(R.id.imageView11).setOnClickListener(this);
@@ -34,14 +36,14 @@ public class ChooseAvatarDialog extends DialogFragment implements View.OnClickLi
         int i = v.getId();
         Intent intent = new Intent(getActivity(), MenuActivity.class);
 
-        if (i == R.id.imageView5){
+        if (i == R.id.achievment2){
             int AvatarNummber = 1;
             intent.putExtra("Avatar",AvatarNummber);
             Log.v("dwdwdwd",""+ AvatarNummber);
             startActivity(intent);
             dismiss();
         }
-        if (i == R.id.imageView6){
+        if (i == R.id.achievment1){
             int AvatarNummber = 2;
             intent.putExtra("Avatar",AvatarNummber);
             startActivity(intent);

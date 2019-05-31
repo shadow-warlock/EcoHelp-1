@@ -1,18 +1,24 @@
 package com.example.Activities;
 
 import android.content.Intent;
+
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+
+
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+
 
 import com.example.Classes.ChooseAvatarDialog;
 import com.example.ecohelp.R;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class SettingsActivity extends AppCompatActivity {
+
+public class SettingsActivity extends BaseActivity {
     DialogFragment dlg1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +26,12 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         dlg1 = new ChooseAvatarDialog();
         Toolbar toolbar = findViewById(R.id.mytoolbar);
+
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("EcoHelp");
+            getSupportActionBar().setTitle("Настройки");
         }
     }
 

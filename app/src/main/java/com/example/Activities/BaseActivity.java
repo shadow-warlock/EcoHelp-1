@@ -1,6 +1,6 @@
 package com.example.Activities;
 
-import android.app.Activity;
+
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 

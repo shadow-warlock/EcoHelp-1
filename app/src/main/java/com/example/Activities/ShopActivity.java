@@ -3,7 +3,6 @@ package com.example.Activities;
 import android.content.Context;
 
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AlertDialog;
 
 import android.os.Bundle;
@@ -36,6 +35,7 @@ public class ShopActivity extends BaseActivity {
     Context context;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +50,10 @@ public class ShopActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("Магазин ");
         }
+
+
 
 
 
@@ -71,6 +74,7 @@ public class ShopActivity extends BaseActivity {
                         Log.v("Shop1111111111111111", "" + petiarochkaAmount100);
                         uidRef.getRef().child("coupons").child("petiarochka").child("petiarochka100").setValue(petiarochkaAmount100 + 1);
                         uidRef.getRef().child("coinsAmount").setValue(coinsAmount - 100);
+                        getSupportActionBar().setTitle("Магазин. Баланс:"+coinsAmount );
 
 
                     } else {

@@ -126,6 +126,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (!dataSnapshot.exists()) {
+                                    assert GoogleAvatar != null;
                                     writeNewUser(account,GoogleAvatar,username);
 
                                 }
@@ -169,9 +170,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    private void writeNewUser( String account,Uri avatar,String username) {
+    private void writeNewUser( String email,Uri avatar,String username) {
 
-        GoogleUser user = new GoogleUser(account, 0);
+        GoogleUser user = new GoogleUser(email, 0);
 
         mDatabase.child("users").child(getUid()).setValue(user);
         mDatabase.child("users").child(getUid()).child("GoogleAvatar").setValue(avatar.toString());

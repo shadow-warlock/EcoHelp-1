@@ -25,23 +25,22 @@ import java.util.List;
 public class LibraryActivity extends BaseActivity {
     private static final String TAG = "LibraryActivity";
     private RecyclerView recyclerView;
-    private Toolbar toolbar;
 
 
-
-
-
-
-List<Coupons> couponss = new ArrayList<>();
+    List<Coupons> couponss = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
-        toolbar = findViewById(R.id.mytoolbar);
+        Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
+
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle("Купоны");
+
         }
         setInitialData();
 
@@ -61,6 +60,7 @@ List<Coupons> couponss = new ArrayList<>();
         onBackPressed();  //или this.finish или что то свое
         return true;
     }
+
 
     public void  setInitialData(){
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -86,37 +86,37 @@ List<Coupons> couponss = new ArrayList<>();
                 couponss.clear();
                 for (int i = 0; i < petiarochkaAmount100; i++) {
 
-                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    couponss.add(new Coupons(R.drawable.p100,"petiarochkaAmount100"));
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }
                 for (int i = 0; i < petiarochkaAmount300; i++) {
 
-                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    couponss.add(new Coupons(R.drawable.p300,"petiarochkaAmount300"));
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }
                 for (int i = 0; i < petiarochkaAmount500; i++) {
 
-                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    couponss.add(new Coupons(R.drawable.p500,"petiarochkaAmount500"));
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }
                 for (int i = 0; i < lentaAmount100; i++) {
 
-                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    couponss.add(new Coupons(R.drawable.l100,"lentaAmount100"));
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }
                 for (int i = 0; i < lentaAmount300; i++) {
 
-                    couponss.add(new Coupons(R.drawable.petiarochka));
+                    couponss.add(new Coupons(R.drawable.l300,"lentaAmount300"));
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }
                 for (int i = 0; i < lentaAmount500; i++) {
 
-                    couponss.add(new Coupons(R.drawable.qedgp5xjytu));
+                    couponss.add(new Coupons(R.drawable.l500,"lentaAmount500"));
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }

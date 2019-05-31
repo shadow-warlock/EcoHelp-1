@@ -1,5 +1,6 @@
 package com.example.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
+import java.util.Objects;
 
 public class MenuActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -43,10 +45,11 @@ public class MenuActivity extends BaseActivity
         setContentView(R.layout.activity_test);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Карта");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         TextView nick1 = navigationView.getHeaderView(0).findViewById(R.id.NickMenuActivity);
-        TextView email1 = navigationView.getHeaderView(0).findViewById(R.id.EmailMenuActivity);
+        TextView coinsAmountView = navigationView.getHeaderView(0).findViewById(R.id.coinsAmountMenuActivity);
         ImageView avataroffline = navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,17 +72,19 @@ public class MenuActivity extends BaseActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String nick = dataSnapshot.child("username").getValue(String.class);
-                String email = dataSnapshot.child("account").getValue(String.class);
                 String Avatar = dataSnapshot.child("GoogleAvatar").getValue(String.class);
+                Long coinsAmount = dataSnapshot.child("coinsAmount").getValue(Long.class);
                 nick1.setText(nick);
-                email1.setText(email);
+                String coinsView = "Баланс: "+coinsAmount;
+                coinsAmountView.setText(coinsView);
+                assert Avatar != null;
                 if (Avatar.length() >= 2) {
 
 
                     new DownloadImageTask(navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity)).execute(Avatar);
 
                 }
-                if (RedSignal[0] != null){
+                        if (RedSignal[0] != null){
 
                     String AvatarRezerv = dataSnapshot.child("GoogleAvatarRezerv").getValue(String.class);
                     uidRef.child("GoogleAvatar").setValue(AvatarRezerv);
@@ -162,10 +167,11 @@ Log.v("dwdwdwdwd",""+getIntent());
 
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
-        public DownloadImageTask(ImageView bmImage) {
+        DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
 
@@ -349,43 +355,34 @@ Log.v("dwdwdwdwd",""+getIntent());
         return true;
     }
 
+
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this,SettingsActivity.class);
-            startActivity(intent);
-
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.camera) {
 
             Intent intent = new Intent(this, DecoderActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.shop) {
             Intent intent = new Intent(this, ShopActivity.class);
             startActivity(intent);
 
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.achievmentsdrawer) {
             Intent intent = new Intent(this, LibraryActivity.class);
             startActivity(intent);
 
+        }
+        else if(id == R.id.couponsdrawer){
+            Intent intent = new Intent(this, AchievmetsActivity.class);
+            startActivity(intent);
+        }
+        else if(id == R.id.settings){
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

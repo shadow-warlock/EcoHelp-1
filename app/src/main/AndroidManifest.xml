@@ -21,19 +21,23 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,RtlEnabled"
         tools:targetApi="donut">
-
-        <activity android:name="com.example.Activities.SettingsActivity"
+        <activity android:name="com.example.Activities.AchievmetsActivity"></activity>
+        <activity
+            android:name="com.example.Activities.SettingsActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name="com.example.Activities.MenuActivity"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.example.Activities.ShopActivity"
+        <activity
+            android:name="com.example.Activities.ShopActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.example.Activities.RegistationActivity"
+        <activity
+            android:name="com.example.Activities.RegistationActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.example.Activities.MainActivity"
+        <activity
+            android:name="com.example.Activities.MainActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,14 +45,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.Activities.LibraryActivity"
+        <activity
+            android:name="com.example.Activities.LibraryActivity"
             tools:ignore="InnerclassSeparator" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name="com.example.Activities.LoginActivity"
+        <activity
+            android:name="com.example.Activities.LoginActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,9 +62,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.Activities.BaseActivity"
+        <activity
+            android:name="com.example.Activities.BaseActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.example.Activities.DecoderActivity"
+        <activity
+            android:name="com.example.Activities.DecoderActivity"
             tools:ignore="InnerclassSeparator" />
     </application>
 

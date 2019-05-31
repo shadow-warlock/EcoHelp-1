@@ -9,6 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#03A9F4"
         android:theme="@style/AppTheme.AppBarOverlay"
         android:visibility="visible">
 
@@ -16,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="#03A9F4"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
     </android.support.design.widget.AppBarLayout>
