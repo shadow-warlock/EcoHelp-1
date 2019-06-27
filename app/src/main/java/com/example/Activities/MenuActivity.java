@@ -16,9 +16,13 @@ import android.support.v4.widget.DrawerLayout;
 
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.example.Classes.Pandomats;
+import com.example.Classes.Service;
 import com.example.ecohelp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,15 +37,29 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MenuActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+
+    private Retrofit retrofit;
+    Response response;
+    List<Pandomats> pandomats;
+
+
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_test);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -51,6 +69,30 @@ public class MenuActivity extends BaseActivity
         TextView nick1 = navigationView.getHeaderView(0).findViewById(R.id.NickMenuActivity);
         TextView coinsAmountView = navigationView.getHeaderView(0).findViewById(R.id.coinsAmountMenuActivity);
         ImageView avataroffline = navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity);
+        pandomats = new ArrayList<>();
+
+
+
+        Service.getInstance()
+                .getJSONApi()
+                .loadList()
+                .enqueue(new Callback<List<Pandomats>>() {
+
+
+                    @Override
+                    public void onResponse(Call<List<Pandomats>> call, Response<List<Pandomats>> response) {
+                        pandomats.addAll(response.body());
+
+                        Log.v("ListPandomats",pandomats.toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Pandomats>> call, Throwable t) {
+
+                    }
+                });
+
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -67,24 +109,25 @@ public class MenuActivity extends BaseActivity
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference uidRef = rootRef.child("users").child(getUid());
 
+
         Log.i("deecode",getUid());
         ValueEventListener valueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String nick = dataSnapshot.child("username").getValue(String.class);
+                String email = dataSnapshot.child("account").getValue(String.class);
                 String Avatar = dataSnapshot.child("GoogleAvatar").getValue(String.class);
                 Long coinsAmount = dataSnapshot.child("coinsAmount").getValue(Long.class);
-                nick1.setText(nick);
+                nick1.setText(email);
                 String coinsView = "Баланс: "+coinsAmount;
                 coinsAmountView.setText(coinsView);
-                assert Avatar != null;
-                if (Avatar.length() >= 2) {
+
+                if (Avatar != null && Avatar.length() >= 2) {
 
 
                     new DownloadImageTask(navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity)).execute(Avatar);
 
                 }
-                        if (RedSignal[0] != null){
+                if (RedSignal[0] != null){
 
                     String AvatarRezerv = dataSnapshot.child("GoogleAvatarRezerv").getValue(String.class);
                     uidRef.child("GoogleAvatar").setValue(AvatarRezerv);
@@ -92,23 +135,23 @@ public class MenuActivity extends BaseActivity
                     new DownloadImageTask(navigationView.getHeaderView(0).findViewById(R.id.avatarMenuActivity)).execute(Avatar);
                     RedSignal[0] = null;
                 }
-                if(Avatar.length()<=1) {
+                if (Avatar != null && Avatar.length() <= 1) {
 
                     if (Avatar.equals("1")) {
                         avataroffline.setImageResource(R.drawable.boy1);
-                        uidRef.child("GoogleAvatar").setValue(""+Avatar);
+                        uidRef.child("GoogleAvatar").setValue("" + Avatar);
 
 
                     }
                     if (Avatar.equals("2")) {
                         avataroffline.setImageResource(R.drawable.boy_1);
-                        uidRef.child("GoogleAvatar").setValue(""+Avatar);
+                        uidRef.child("GoogleAvatar").setValue("" + Avatar);
 
                     }
 
                     if (Avatar.equals("4")) {
                         avataroffline.setImageResource(R.drawable.girl_1);
-                        uidRef.child("GoogleAvatar").setValue(""+Avatar);
+                        uidRef.child("GoogleAvatar").setValue("" + Avatar);
 
                     }
                     if (Avatar.equals("5")) {
@@ -144,6 +187,7 @@ public class MenuActivity extends BaseActivity
 
 
 
+
 Log.v("dwdwdwdwd",""+getIntent());
         int count = getIntent().getIntExtra("Avatar", 0);
         Log.v("dwdwdwdwd",""+count);
@@ -166,7 +210,15 @@ Log.v("dwdwdwdwd",""+getIntent());
 
 
         }
-    }
+    } //end onCreate
+
+
+
+
+
+
+
+
     @SuppressLint("StaticFieldLeak")
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -376,10 +428,6 @@ Log.v("dwdwdwdwd",""+getIntent());
             startActivity(intent);
 
         }
-        else if(id == R.id.couponsdrawer){
-            Intent intent = new Intent(this, AchievmetsActivity.class);
-            startActivity(intent);
-        }
         else if(id == R.id.settings){
             Intent intent = new Intent(this,SettingsActivity.class);
             startActivity(intent);
@@ -390,3 +438,4 @@ Log.v("dwdwdwdwd",""+getIntent());
         return true;
     }
 }
+

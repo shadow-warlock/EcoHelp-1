@@ -58,6 +58,7 @@
     <string name="EXIT">Выход</string>
     <string name="defaultAvatar">Вернуть обычную аватарку</string>
     <string name="changeAvatar">Смена аватара</string>
+    <string name="showBarcode">  Покажите этот штрих-код на кассе  </string>
 
 
 </resources>

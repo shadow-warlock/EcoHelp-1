@@ -23,7 +23,7 @@ public class RegistationActivity extends BaseActivity {
     private EditText EmailField;
     private EditText PasswordField;
     private EditText RepeatPassword;
-    private EditText Login;
+
 
     private DatabaseReference mDatabase;
 
@@ -38,7 +38,7 @@ public class RegistationActivity extends BaseActivity {
         EmailField = findViewById(R.id.inputEmail);
         PasswordField = findViewById(R.id.inputPassword);
         RepeatPassword = findViewById(R.id.repeatPassword);
-        Login = findViewById(R.id.inputLogin);
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
@@ -67,8 +67,7 @@ public class RegistationActivity extends BaseActivity {
                     updateUI(user);
                     assert user != null;
 
-                    String login = Login.getText().toString();
-                    writeNewUser(email,login);
+                    writeNewUser(email);
                 } else {
                     hideProgressDialog();
                     Log.w(TAG, "Ошибка создания аккаунта", task.getException());
@@ -111,13 +110,7 @@ public class RegistationActivity extends BaseActivity {
         else{
             RepeatPassword.setError(null);
         }
-        String login = Login.getText().toString();
-        if(TextUtils.isEmpty(login)){
-            Login.setError("Пусто");
-        }
-        else {
-            Login.setError(null);
-        }
+
 
         return !valid;
     }
@@ -130,9 +123,9 @@ public class RegistationActivity extends BaseActivity {
 
         }
     }
-    private void writeNewUser( String email, String name) {
+    private void writeNewUser(String email) {
 
-        User user = new User(name,email, 0);
+        User user = new User(email, 0);
 
         mDatabase.child("users").child(getUid()).setValue(user);
         mDatabase.child("users").child(getUid()).child("GoogleAvatar").setValue("https://lh5.googleusercontent.com/-T2wipXlGaik/AAAAAAAAAAI/AAAAAAAAFgg/wK7J3wC4N30/s96-c/photo.jpg");

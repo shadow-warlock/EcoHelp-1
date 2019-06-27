@@ -2,8 +2,10 @@ package com.example.Activities;
 
 import android.Manifest;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.PointF;
 
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 
 
+import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.AlertDialog;
 
 import android.util.Log;
@@ -27,6 +30,7 @@ import com.example.QrCodeReader.QRCodeReaderView;
 import com.example.ecohelp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -106,108 +110,92 @@ public class DecoderActivity extends BaseActivity
 
 
 
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference coinsUidRef = rootRef.child("coinsUid").child(text);
+  DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+  DatabaseReference coinsUidRef = rootRef.child("coinsUid").child(text);
 
 
-
-    ValueEventListener valueEventListener = new ValueEventListener() {
-      @SuppressWarnings("ConstantConditions")
-      @Override
-      public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        Log.v(text, "" + dataSnapshot);
-        if (!dataSnapshot.exists()) {
-          AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
-          builder.setTitle("Информация")
-                  .setMessage("QR Code уже считан или неверен")
-                  .setCancelable(false)
-                  .setNegativeButton("ОК",
-                          (dialog, id) -> {
-
-
-                            Intent intent = new Intent(DecoderActivity.this, MenuActivity.class);
-                            startActivity(intent);
-                          });
-          final AlertDialog alert = builder.create();
+  ValueEventListener valueEventListener = new ValueEventListener() {
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+      Log.v(text, "" + dataSnapshot);
+      if (!dataSnapshot.exists()) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
+        builder.setTitle("Информация")
+                .setMessage("QR-код недействителен")
+                .setCancelable(false)
+                .setNegativeButton("ОК",
+                        (dialog, id) -> {
+                  qrCodeReaderView.setQRDecodingEnabled(true);
+                        });
+        final AlertDialog alert = builder.create();
 
 
+        alert.show();
 
 
+      } else {
+        long qrCoinsAmount = dataSnapshot.getValue(Long.class);
+        DatabaseReference coinsAmountRef = rootRef.child("users").child(getUid()).child("coinsAmount");
+        ValueEventListener valueEventListener = new ValueEventListener() {
+
+
+          @Override
+          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            long coinsAmount = dataSnapshot.getValue(Long.class);
+            coinsAmountRef.getRef().setValue(coinsAmount + qrCoinsAmount);
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
+            builder.setTitle("Оповещение")
+                    .setMessage("Вам начислено " + qrCoinsAmount + " баллов")
+                    .setCancelable(false)
+                    .setNegativeButton("ОК",
+                            (dialog, id) -> {
+                              qrCodeReaderView.setQRDecodingEnabled(true);
+
+                            });
+            builder.setPositiveButton("В магазин", (dialog, which) -> {
+              Intent intent = new Intent(DecoderActivity.this,ShopActivity.class);
+              startActivity(intent);
+              finish();
+
+            });
+
+            AlertDialog alert = builder.create();
+            Log.v("dssdwd", "" + alert.isShowing());
             alert.show();
 
 
+            coinsUidRef.removeValue();
 
 
+          }
 
 
+          @Override
+          public void onCancelled(@NonNull DatabaseError databaseError) {
 
+          }
+        };
 
-
-
-        }
-
-        else {
-          long qrCoinsAmount = dataSnapshot.getValue(Long.class);
-          DatabaseReference coinsAmountRef = rootRef.child("users").child(getUid()).child("coinsAmount");
-          ValueEventListener valueEventListener = new ValueEventListener() {
-
-
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-              long coinsAmount = dataSnapshot.getValue(Long.class);
-              coinsAmountRef.getRef().setValue(coinsAmount + qrCoinsAmount);
-
-
-
-
-              AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
-              builder.setTitle("Информация")
-                      .setMessage("QR Code успешно считан и вам начислено " + qrCoinsAmount)
-                      .setCancelable(false)
-                      .setNegativeButton("ОК",
-                              (dialog, id) -> {
-                                Intent intent = new Intent(DecoderActivity.this, MenuActivity.class);
-                                startActivity(intent);
-
-                              });
-              AlertDialog alert = builder.create();
-              Log.v("dssdwd",""+alert.isShowing());
-              alert.show();
-
-
-
-                coinsUidRef.removeValue();
-
-
-
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-          };
-          coinsAmountRef.addListenerForSingleValueEvent(valueEventListener);
-
-
-
-        }
+        coinsAmountRef.addListenerForSingleValueEvent(valueEventListener);
 
 
       }
 
-      @Override
-      public void onCancelled(@NonNull DatabaseError databaseError) {
 
-      }
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
 
 
-    };
-    coinsUidRef.addListenerForSingleValueEvent(valueEventListener);
+  };
 
-
+  coinsUidRef.addListenerForSingleValueEvent(valueEventListener);
 
   }
 

@@ -26,10 +26,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#99000000"
+        android:background="@color/color_green"
         android:checked="false"
         android:padding="16dp"
-        android:text="On/Off flashlight"
+        android:text="Вкл./Выкл. фонарик"
         android:textColor="#ffffff"
         android:textSize="14sp" />
 

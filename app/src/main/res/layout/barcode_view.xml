@@ -2,19 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="@string/showBarcode"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/barcodeView"
         android:layout_width="match_parent"
-        android:layout_height="81dp" />
+        android:layout_height="80dp" />
 
     <TextView
         android:id="@+id/textViewbarcode"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"/>
+        android:gravity="center" />
 
 </LinearLayout>

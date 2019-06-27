@@ -34,6 +34,10 @@ configurations.all {
 
 
 dependencies {
+    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+
     implementation('android.arch.lifecycle:extensions:1.1.1')
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'com.android.support:multidex:1.0.3'

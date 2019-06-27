@@ -21,7 +21,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,RtlEnabled"
         tools:targetApi="donut">
-        <activity android:name="com.example.Activities.AchievmetsActivity"></activity>
         <activity
             android:name="com.example.Activities.SettingsActivity"
             tools:ignore="InnerclassSeparator" />
