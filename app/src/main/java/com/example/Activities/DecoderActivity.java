@@ -2,65 +2,89 @@ package com.example.Activities;
 
 import android.Manifest;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.graphics.PointF;
 
+import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 
-import android.support.v4.widget.CompoundButtonCompat;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 
 
 
-
-import com.example.Classes.PointsOverlayView;
-import com.example.QrCodeReader.QRCodeReaderView;
 import com.example.ecohelp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 
 
 public class DecoderActivity extends BaseActivity
-    implements ActivityCompat.OnRequestPermissionsResultCallback, QRCodeReaderView.OnQRCodeReadListener {
+    implements ActivityCompat.OnRequestPermissionsResultCallback, QRCodeReaderView.OnQRCodeReadListener{
 
   private static final int MY_PERMISSION_REQUEST_CAMERA = 0;
 
 
   private ViewGroup mainLayout;
+  ImageView flashlight;
 
-
+  private SurfaceView cameraView;
+  private CameraSource cameraSource;
+  String result;
 
   private QRCodeReaderView qrCodeReaderView;
-  private PointsOverlayView pointsOverlayView;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Activity = "Scaner";
 
     setContentView(R.layout.activity_decoder);
-
+    isOnline(DecoderActivity.this);
+    flashlight = findViewById(R.id.flashlight);
 
 
     mainLayout = findViewById(R.id.main_layout);
 
+    cameraView = findViewById(R.id.cameraView);
 
+    BarcodeDetector detector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.QR_CODE).build();
+    cameraSource = new CameraSource.Builder(this, detector).setRequestedPreviewSize(640, 480).build();
+
+
+    Toolbar toolbar = findViewById(R.id.mytoolbar);
+    setSupportActionBar(toolbar);
+    Drawer(toolbar, DecoderActivity.this, DecoderActivity.this);
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().setTitle("Сканер");
+    }
 
 
     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -69,7 +93,44 @@ public class DecoderActivity extends BaseActivity
     } else {
       requestCameraPermission();
     }
+
+    cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
+      @Override
+      public void surfaceCreated(SurfaceHolder holder) {
+        try {
+          cameraSource.start(cameraView.getHolder());
+        } catch (IOException e) {
+          Log.e("CAMERA SOURCE", e.getMessage());
+        }
+      }
+
+      @Override
+      public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+      }
+
+      @Override
+      public void surfaceDestroyed(SurfaceHolder holder) {
+        cameraSource.stop();
+      }
+    });
+
+    detector.setProcessor(new Detector.Processor<Barcode>() {
+      @Override
+      public void release() {
+
+      }
+
+      @Override
+      public void receiveDetections(Detector.Detections<Barcode> detections) {
+        final SparseArray<Barcode> barcodes = detections.getDetectedItems();
+        if (barcodes.size() != 0) {
+          result = barcodes.valueAt(0).displayValue;
+        }
+      }
+    });
   }
+
   @Override
   public boolean onSupportNavigateUp() {
     onBackPressed();  //или this.finish или что то свое
@@ -103,7 +164,6 @@ public class DecoderActivity extends BaseActivity
 
   @Override
   public void onQRCodeRead(String text, PointF[] points) {
-    pointsOverlayView.setPoints(points);
     qrCodeReaderView.setQRDecodingEnabled(false);
 
 
@@ -216,17 +276,9 @@ public class DecoderActivity extends BaseActivity
   }
 
   private void initQRCodeReaderView() {
-    View content = getLayoutInflater().inflate(R.layout.content_decoder, mainLayout, true);
+    View content = getLayoutInflater().inflate(R.layout.activity_decoder, mainLayout, true);
 
     qrCodeReaderView = content.findViewById(R.id.qrdecoderview);
-    CheckBox flashlightCheckBox = content.findViewById(R.id.flashlight_checkbox);
-    flashlightCheckBox.setOnCheckedChangeListener((compoundButton, isChecked) -> qrCodeReaderView.setTorchEnabled(isChecked));
-
-
-
-
-    pointsOverlayView = content.findViewById(R.id.points_overlay_view);
-
 
     qrCodeReaderView.setAutofocusInterval(2000L);
     qrCodeReaderView.setOnQRCodeReadListener(this);
@@ -250,5 +302,22 @@ public class DecoderActivity extends BaseActivity
     }
   }
 
+  int i = 1;
+  public void onClickDecoder(View v) throws CameraAccessException {
+    CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+    String cameraId = null; // Usually back camera is at 0 position.
+      cameraId = camManager.getCameraIdList()[0];
 
+
+
+    i++;
+    if(i %2 != 0){
+      flashlight.setImageResource(R.drawable.flashlightoff);
+      camManager.setTorchMode(cameraId,false);
+    }
+    else {
+      flashlight.setImageResource(R.drawable.flashlighton);
+      camManager.setTorchMode(cameraId, true);
+    }
+  }
 }

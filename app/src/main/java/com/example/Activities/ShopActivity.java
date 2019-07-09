@@ -2,14 +2,19 @@ package com.example.Activities;
 
 import android.content.Context;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import com.google.android.material.navigation.NavigationView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 
 import android.os.Bundle;
 
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -25,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 
-public class ShopActivity extends BaseActivity {
+public class ShopActivity extends BaseActivity  {
     AlertDialog.Builder adp100;
     AlertDialog.Builder adp300;
     AlertDialog.Builder adp500;
@@ -40,6 +45,7 @@ public class ShopActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
+        Activity = "Shop";
         context = ShopActivity.this;
         String title = "Подтверждение";
         String message = "Вы уверены";
@@ -47,11 +53,13 @@ public class ShopActivity extends BaseActivity {
         String button2String = "Нет";
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
+        isOnline(ShopActivity.this);
+        Drawer(toolbar,ShopActivity.this,ShopActivity.this);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("Магазин ");
+            getSupportActionBar().setTitle("Магазины");
         }
+
+
 
 
 
@@ -89,6 +97,7 @@ public class ShopActivity extends BaseActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
+
                 }
 
 
@@ -102,6 +111,7 @@ public class ShopActivity extends BaseActivity {
         adp100.setOnCancelListener(dialog -> {
 
         });
+
 
 
         adp300 = new AlertDialog.Builder(context);
@@ -134,6 +144,7 @@ public class ShopActivity extends BaseActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
+
 
                 }
 
@@ -354,5 +365,10 @@ public class ShopActivity extends BaseActivity {
         }
 
 
+
+
     }
+
+
+
 }

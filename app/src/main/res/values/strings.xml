@@ -14,7 +14,7 @@
     <string name="scan_result_label">Last scan result: </string>
     <string name="library">Библиотека</string>
     <string name="password">Password</string>
-    <string name="email">Email</string>
+    <string name="email">E-mail</string>
     <string name="sinInwithEmail">Вход через почту</string>
     <string name="Create">Регистрация</string>
     <string name="google">Вход через Google</string>
@@ -59,6 +59,16 @@
     <string name="defaultAvatar">Вернуть обычную аватарку</string>
     <string name="changeAvatar">Смена аватара</string>
     <string name="showBarcode">  Покажите этот штрих-код на кассе  </string>
+    <string name="vxod">Войти</string>
+    <string name="forgetPassword">Забыли пароль?</string>
+    <string name="registratsiya">Зарегистрироваться</string>
+    <string name="parol">Пароль</string>
+    <string name="scanQrCode">"        "Отсканируйте QR-код,\nполученный после сдачи ТБО</string>
+    <string name="sendPassword">Выслать пароль</string>
+    <string name="sendPasswordAgain">Пароль успешно выслан \n  на указанный Email</string>
+    <string name="inputPasswordTimer">Введите пароль 01:59</string>
+    <string name="senAgain2">Выслать пароль еще раз</string>
+    <string name="sendAgain3">Пароль успешно выслан еще раз \n "           "на указанный E-mail</string>
 
 
 </resources>

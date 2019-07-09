@@ -4,9 +4,13 @@ package com.example.Activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 
 import com.example.Classes.GoogleUser;
 import com.example.ecohelp.R;
@@ -16,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +35,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Registration";
     private static final int RC_SIGN_IN = 9001;
 
-
+    private EditText mEmailField;
+    private EditText mPasswordField;
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
@@ -41,12 +47,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.create).setOnClickListener(this);
-        findViewById(R.id.signinwithEmail).setOnClickListener(this);
+        findViewById(R.id.signUp).setOnClickListener(this);
+        findViewById(R.id.forgetPassword).setOnClickListener(this);
         findViewById(R.id.signInGoogle).setOnClickListener(this);
+        mEmailField = findViewById(R.id.fieldEmail);
+        mPasswordField = findViewById(R.id.fieldPassword);
+
+        // Кнопки
+        findViewById(R.id.emailSignInButton).setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        Toolbar toolbar = findViewById(R.id.mytoolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Авторизция");
+        }
+
 
 
 
@@ -72,13 +90,57 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         FirebaseUser user = mAuth.getCurrentUser();
         updateUI(user);
     }
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
-            startActivity(intent);
-            finish();
+
+    private void signIn(String email, String password) {
+        Log.d(TAG, "Вход" + email);
+        if (validateForm()) {
+            return;
         }
+
+        showProgressDialog();
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        hideProgressDialog();
+                        Log.d(TAG, "Вход через почту успешен");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    } else {
+                        hideProgressDialog();
+                        updateUI(null);
+                    }
+
+
+                });
     }
+
+
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String email = mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Пусто");
+            valid = false;
+        } else {
+            mEmailField.setError(null);
+        }
+
+        String password = mPasswordField.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            mPasswordField.setError("Пусто");
+            valid = false;
+        } else {
+            mPasswordField.setError(null);
+        }
+
+        return !valid;
+    }
+
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -107,7 +169,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Log.d(TAG, "Аутентификация" + acct.getId());
 
          String account = acct.getEmail();
-         Uri GoogleAvatar = acct.getPhotoUrl();
 
          String username = acct.getDisplayName();
 
@@ -126,8 +187,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (!dataSnapshot.exists()) {
-                                    assert GoogleAvatar != null;
-                                    writeNewUser(account,GoogleAvatar,username);
+                                    writeNewUser(account,username);
 
                                 }
 
@@ -170,13 +230,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    private void writeNewUser( String email,Uri avatar,String username) {
+    private void writeNewUser( String email,String username) {
 
         GoogleUser user = new GoogleUser(email, 0);
 
         mDatabase.child("users").child(getUid()).setValue(user);
-        mDatabase.child("users").child(getUid()).child("GoogleAvatar").setValue(avatar.toString());
-        mDatabase.child("users").child(getUid()).child("GoogleAvatarRezerv").setValue(avatar.toString());
+        mDatabase.child("users").child(getUid()).child("Avatar").setValue(1);
         mDatabase.child("users").child(getUid()).child("username").setValue(username);
         mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
         mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
@@ -194,12 +253,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (i == R.id.signInGoogle) {
             signIn();
 
-        } else if (i == R.id.create) {
+        } else if (i == R.id.signUp) {
             Intent intent = new Intent(MainActivity.this, RegistationActivity.class);
             startActivity(intent);
 
-        } else if (i == R.id.signinwithEmail) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        } else if (i == R.id.emailSignInButton) {
+            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+        }
+        else if(i==R.id.forgetPassword){
+            Intent intent = new Intent(MainActivity.this,newPasswordActivity.class);
             startActivity(intent);
         }
     }

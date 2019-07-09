@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.Classes.User;
 import com.example.ecohelp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +45,13 @@ public class RegistationActivity extends BaseActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
+        Toolbar toolbar = findViewById(R.id.mytoolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Регистрация");
+        }
+
+
 
     }
 
@@ -70,9 +79,7 @@ public class RegistationActivity extends BaseActivity {
                     writeNewUser(email);
                 } else {
                     hideProgressDialog();
-                    Log.w(TAG, "Ошибка создания аккаунта", task.getException());
-                    Toast.makeText(RegistationActivity.this, "Ошибка создания аккаунта",
-                            Toast.LENGTH_SHORT).show();
+
                     updateUI(null);
                 }
 
@@ -115,14 +122,7 @@ public class RegistationActivity extends BaseActivity {
         return !valid;
     }
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            Intent intent = new Intent(RegistationActivity.this, MenuActivity.class);
-            startActivity(intent);
-            finish();
 
-        }
-    }
     private void writeNewUser(String email) {
 
         User user = new User(email, 0);

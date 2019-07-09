@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Pandomats {
-    @SerializedName("id")
+    @SerializedName("address")
     @Expose
     private String address;
     @SerializedName("model")
@@ -21,7 +21,7 @@ public class Pandomats {
     private LastDeviceData lastDeviceData;
     @SerializedName("image")
     @Expose
-    private Object image;
+    private String image;
 
 
 
@@ -65,11 +65,11 @@ public class Pandomats {
     public void setLastDeviceData(LastDeviceData lastDeviceData) {
         this.lastDeviceData = lastDeviceData;
     }
-    public Object getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Object image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

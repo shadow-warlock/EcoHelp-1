@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +18,10 @@ public class ChooseAvatarDialog extends DialogFragment implements View.OnClickLi
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle("Title!");
+        getDialog().setTitle("Выбор аватара");
         @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.choose_avatar_dialog, null);
         v.findViewById(R.id.achievment2).setOnClickListener(this);
         v.findViewById(R.id.achievment1).setOnClickListener(this);
-        v.findViewById(R.id.imageView8).setOnClickListener(this);
-        v.findViewById(R.id.imageView9).setOnClickListener(this);
-        v.findViewById(R.id.imageView11).setOnClickListener(this);
-        v.findViewById(R.id.imageView12).setOnClickListener(this);
 
         return v;
 
@@ -50,36 +46,6 @@ public class ChooseAvatarDialog extends DialogFragment implements View.OnClickLi
             dismiss();
         }
 
-
-        if (i == R.id.imageView8){
-            int AvatarNummber = 4;
-            intent.putExtra("Avatar",AvatarNummber);
-            startActivity(intent);
-            dismiss();
-        }
-        if (i == R.id.imageView9){
-            int AvatarNummber = 5;
-            intent.putExtra("Avatar",AvatarNummber);
-            startActivity(intent);
-            dismiss();
-        }
-
-
-        if (i == R.id.imageView11){
-            int AvatarNummber = 7;
-            intent.putExtra("Avatar",AvatarNummber);
-            startActivity(intent);
-            dismiss();
-        }
-        if (i == R.id.imageView12){
-
-            int AvatarNummber = 8;
-
-            intent.putExtra("Avatar",AvatarNummber);
-            startActivity(intent);
-            dismiss();
-            Log.v("dwdwd","sahsahsahd8888");
-        }
 
 
 
