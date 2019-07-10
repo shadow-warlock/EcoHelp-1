@@ -57,6 +57,11 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
 
+    api group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
+// https://mvnrepository.com/artifact/com.google.zxing/core
+    implementation group: 'com.google.zxing', name: 'core', version: '3.4.0'
+
+
 
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-auth:18.0.0'
@@ -67,11 +72,10 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.zxing:core:3.3.3'
-    implementation 'com.yanzhenjie.zbar:camera:1.0.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation "org.robolectric:robolectric:3.2.2"
+    implementation project(path: ':barcode-reader')
 }
 
 

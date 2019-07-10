@@ -262,6 +262,20 @@ public class BaseActivity extends AppCompatActivity {
         return false;
     }
 
+    public void showDialog(String message,Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Оповещение")
+                .setMessage(message)
+                .setCancelable(false)
+                .setNegativeButton("ОК",
+                        (dialog, id) -> {
+                           dialog.dismiss();
+
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
 
 

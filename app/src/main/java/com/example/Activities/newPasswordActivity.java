@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 
+import com.example.Classes.SendMail;
 import com.example.ecohelp.R;
 
 public class newPasswordActivity extends AppCompatActivity {
@@ -19,4 +20,8 @@ public class newPasswordActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Восстановление пароля");
         }
     }
+
+
+
+
 }

@@ -31,6 +31,7 @@
     <color name="dark_mask">#dd000000</color>
     <color name="light_blue">#ff33CCFF</color>
     <color name="purple">#ff5b2971</color>
+    <color name="scanner_line">#00ceff</color>
 
 
     <color name="material_drawer_secondary_text">#5fa84e</color>
