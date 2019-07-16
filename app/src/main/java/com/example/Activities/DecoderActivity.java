@@ -7,6 +7,8 @@ import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+import com.example.Classes.QRCode;
+import com.example.Classes.Service;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import androidx.appcompat.widget.Toolbar;
@@ -36,14 +38,21 @@ import com.google.firebase.database.ValueEventListener;
 import com.notbytes.barcode_reader.BarcodeReaderFragment;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DecoderActivity extends BaseActivity
     implements ActivityCompat.OnRequestPermissionsResultCallback , BarcodeReaderFragment.BarcodeReaderListener{
 
   private static final int MY_PERMISSION_REQUEST_CAMERA = 0;
-
+  List<QRCode> qrCodeList;
+    Boolean findSuccess = false;
     private CameraManager myCamera;
 
   private ViewGroup mainLayout;
@@ -95,102 +104,90 @@ public class DecoderActivity extends BaseActivity
     public void onScanned(Barcode barcode) {
       String text = barcode.displayValue;
       Log.v("QRCODE =",text);
-try {
-    Log.v("QRCODE =",text);
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        mBarcodeReaderFragment.pauseScanning();
+
+      qrCodeList = new ArrayList<>();
+        Service.getInstance().getJsonQRCodeApi().loadList().enqueue(new Callback<List<QRCode>>() {
+            @Override
+            public void onResponse(Call<List<QRCode>> call, Response<List<QRCode>> response) {
+                qrCodeList.addAll(Objects.requireNonNull(response.body()));
+
+                for (int j = 0; j <qrCodeList.size() ; j++) {
+                    if(text.equals(qrCodeList.get(j).getKey())) {
+                        findSuccess = true;
+                        String QrCodeCoinsAmount = qrCodeList.get(j).getValue();
+                        DatabaseReference coinsAmountRef = rootRef.child("users").child(getUid()).child("coinsAmount");
 
 
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference coinsUidRef = rootRef.child("coinsUid").child(text);
-    mBarcodeReaderFragment.pauseScanning();
+                        ValueEventListener valueEventListener = new ValueEventListener() {
 
 
-    ValueEventListener valueEventListener = new ValueEventListener() {
-        @SuppressWarnings("ConstantConditions")
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            Log.v(text, "" + dataSnapshot);
-            if (!dataSnapshot.exists()) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
-                builder.setTitle("Информация")
-                        .setMessage("QR-код недействителен")
-                        .setCancelable(false)
-                        .setNegativeButton("ОК",
-                                (dialog, id) -> {
-                                    mBarcodeReaderFragment.resumeScanning();
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                long coinsAmount = dataSnapshot.getValue(Long.class);
+                                coinsAmountRef.getRef().setValue(coinsAmount + Integer.parseInt(QrCodeCoinsAmount) );
+                                AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
+                                builder.setTitle("Оповещение")
+                                        .setMessage("Вам начислено " + QrCodeCoinsAmount + " баллов")
+                                        .setCancelable(false)
+                                        .setNegativeButton("ОК",
+                                                (dialog, id) -> {
+                                                    mBarcodeReaderFragment.resumeScanning();
+
+                                                });
+                                builder.setPositiveButton("В магазин", (dialog, which) -> {
+                                    Intent intent = new Intent(DecoderActivity.this, ShopActivity.class);
+                                    startActivity(intent);
+                                    finish();
+
                                 });
-                final AlertDialog alert = builder.create();
+
+                                AlertDialog alert = builder.create();
+                                Log.v("dssdwd", "" + alert.isShowing());
+                                alert.show();
 
 
-                alert.show();
+                            }
 
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            } else {
-                long qrCoinsAmount = dataSnapshot.getValue(Long.class);
-                DatabaseReference coinsAmountRef = rootRef.child("users").child(getUid()).child("coinsAmount");
-                ValueEventListener valueEventListener = new ValueEventListener() {
-
-
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        long coinsAmount = dataSnapshot.getValue(Long.class);
-                        coinsAmountRef.getRef().setValue(coinsAmount + qrCoinsAmount);
-
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
-                        builder.setTitle("Оповещение")
-                                .setMessage("Вам начислено " + qrCoinsAmount + " баллов")
-                                .setCancelable(false)
-                                .setNegativeButton("ОК",
-                                        (dialog, id) -> {
-                                            mBarcodeReaderFragment.resumeScanning();
-
-                                        });
-                        builder.setPositiveButton("В магазин", (dialog, which) -> {
-                            Intent intent = new Intent(DecoderActivity.this, ShopActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                        });
-
-                        AlertDialog alert = builder.create();
-                        Log.v("dssdwd", "" + alert.isShowing());
-                        alert.show();
-
-
-                        coinsUidRef.removeValue();
-
-
+                            }
+                        };
+                        coinsAmountRef.addListenerForSingleValueEvent(valueEventListener);
+                        break;
                     }
 
+                }
+                if(!findSuccess){
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
+                    builder.setTitle("Информация")
+                            .setMessage("QR-код недействителен")
+                            .setCancelable(false)
+                            .setNegativeButton("ОК",
+                                    (dialog, id) -> {
+                                        mBarcodeReaderFragment.resumeScanning();
+                                    });
+                    final AlertDialog alert = builder.create();
 
-                    }
-                };
 
-                coinsAmountRef.addListenerForSingleValueEvent(valueEventListener);
+                    alert.show();
 
+
+                }
 
             }
 
+            @Override
+            public void onFailure(Call<List<QRCode>> call, Throwable t) {
 
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
+            }
+        });
 
 
-    };
-
-    coinsUidRef.addListenerForSingleValueEvent(valueEventListener);
-}
-catch (DatabaseException e){
-    showDialog("QR Code не верен",DecoderActivity.this);
-
-}
 
     }
 

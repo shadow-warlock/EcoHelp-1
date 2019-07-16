@@ -38,7 +38,7 @@ public class informarionPandomatsDialog extends DialogFragment {
 
         pandomats = new ArrayList<>();
         Service.getInstance()
-                .getJSONApi()
+                .getJSONAPlaceApi()
                 .loadList()
                 .enqueue(new Callback<List<Pandomats>>() {
 

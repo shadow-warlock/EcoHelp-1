@@ -30,7 +30,7 @@ public class informationWithoutImageDialog extends DialogFragment { List<Pandoma
 
         pandomats = new ArrayList<>();
         Service.getInstance()
-                .getJSONApi()
+                .getJSONAPlaceApi()
                 .loadList()
                 .enqueue(new Callback<List<Pandomats>>() {
 

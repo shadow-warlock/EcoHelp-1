@@ -2,6 +2,8 @@ package com.example.Activities;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.example.Classes.RecyclerAdapter;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -69,4 +71,6 @@ public class LibraryActivity extends BaseActivity{
     }
 
 }
+
+
 

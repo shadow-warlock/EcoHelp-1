@@ -1,14 +1,11 @@
 package com.example.Activities;
 
 
-import android.content.Intent;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -37,9 +34,9 @@ public class RegistationActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registation);
-        EmailField = findViewById(R.id.inputEmail);
-        PasswordField = findViewById(R.id.inputPassword);
-        RepeatPassword = findViewById(R.id.repeatPassword);
+        EmailField = findViewById(R.id.emailRegistration);
+        PasswordField = findViewById(R.id.passwordRegistration);
+        RepeatPassword = findViewById(R.id.repeatPasswordRegistration);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -128,8 +125,7 @@ public class RegistationActivity extends BaseActivity {
         User user = new User(email, 0);
 
         mDatabase.child("users").child(getUid()).setValue(user);
-        mDatabase.child("users").child(getUid()).child("GoogleAvatar").setValue("https://lh5.googleusercontent.com/-T2wipXlGaik/AAAAAAAAAAI/AAAAAAAAFgg/wK7J3wC4N30/s96-c/photo.jpg");
-        mDatabase.child("users").child(getUid()).child("GoogleAvatarRezerv").setValue("https://lh5.googleusercontent.com/-T2wipXlGaik/AAAAAAAAAAI/AAAAAAAAFgg/wK7J3wC4N30/s96-c/photo.jpg");
+        mDatabase.child("users").child(getUid()).child("Avatar").setValue("1");
         mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
         mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
         mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);

@@ -98,8 +98,7 @@ Context context = MenuActivity.this;
         googleMap.setOnMarkerClickListener(this);
 
         pandomats = new ArrayList<>();
-        Service.getInstance()
-                .getJSONApi()
+        Service.getInstance().getJSONAPlaceApi()
                 .loadList()
                 .enqueue(new Callback<List<Pandomats>>() {
 

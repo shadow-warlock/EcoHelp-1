@@ -85,6 +85,8 @@
     <string name="barcode_error">"Error reading barcode: %1$s"</string>
     <string name="grant">GRANT</string>
     <string name="cancel">CANCEL</string>
+    <string name="scanQrcodeHorizontal">Отсканируйте QR код, \n полученный  \n после сдачи ТБО</string>
+    <string name="wrongEmail">Неверно введен E-mail</string>
 
 
 </resources>

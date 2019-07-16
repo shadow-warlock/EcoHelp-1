@@ -2,7 +2,6 @@ package com.example.Activities;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -49,21 +48,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.signUp).setOnClickListener(this);
+        findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.forgetPassword).setOnClickListener(this);
         findViewById(R.id.signInGoogle).setOnClickListener(this);
-        mEmailField = findViewById(R.id.fieldEmail);
-        mPasswordField = findViewById(R.id.fieldPassword);
+        mEmailField = findViewById(R.id.emaiField);
+        mPasswordField = findViewById(R.id.passwordField);
+
 
         // Кнопки
-        findViewById(R.id.emailSignInButton).setOnClickListener(this);
+        findViewById(R.id.signUp).setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Авторизция");
+            getSupportActionBar().setTitle("Авторизация");
         }
+
 
 
 
