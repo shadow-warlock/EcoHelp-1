@@ -7,9 +7,16 @@ import androidx.appcompat.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.Classes.CouponsRecycler;
+import com.example.Classes.ExpandingRecycler;
+import com.example.Classes.LogoHolder;
 import com.example.ecohelp.R;
+
+import java.util.List;
 
 
 public class ShopActivity extends BaseActivity  {
@@ -40,6 +47,15 @@ public class ShopActivity extends BaseActivity  {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Магазины");
         }
+        List<CouponsRecycler> genres = null;
+
+        RecyclerView recyclerView = findViewById(R.id.item);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        //instantiate your adapter with the list of genres
+        ExpandingRecycler adapter = new ExpandingRecycler(genres);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
 
 

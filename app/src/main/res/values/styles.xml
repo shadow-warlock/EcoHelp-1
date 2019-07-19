@@ -30,6 +30,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+
     <!-- Light EditTexts -->
     <style name="ThemeOverlay.MyLightEditText" parent="ThemeOverlay.AppCompat.Dark" />
 

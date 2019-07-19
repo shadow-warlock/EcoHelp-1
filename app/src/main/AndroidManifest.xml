@@ -41,6 +41,7 @@
         <activity
             android:name="com.example.Activities.MenuActivity"
             android:label="@string/title_activity_test"
+
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name="com.example.Activities.ShopActivity"

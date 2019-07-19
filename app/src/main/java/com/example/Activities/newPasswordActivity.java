@@ -4,14 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.Classes.SendMail;
 import com.example.ecohelp.R;
 
-public class newPasswordActivity extends AppCompatActivity {
+import java.util.Random;
+
+public class newPasswordActivity extends BaseActivity {
 EditText mEmailField;
+boolean sendEmailFirst = false;
+TextView sendPasswordSuccess1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,37 +27,48 @@ EditText mEmailField;
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Восстановление пароля");
         }
+        sendPasswordSuccess1 = findViewById(R.id.textView11);
+        sendPasswordSuccess1.setVisibility(View.INVISIBLE);
+
         mEmailField = findViewById(R.id.emailRecover);
     }
 
-    private void sendEmail() {
-        //Getting content for email
-        String email = mEmailField.getText().toString().trim();
-        String subject = "Восстановление пароля";
-        String message = getRandomIntegerBetweenRange().trim();
-
-        //Creating SendMail object
-        SendMail sm = new SendMail(this, email, subject, message);
-
-        //Executing sendmail to send email
-        sm.execute();
-    }
     public void onClick(View v ){
-        sendEmail();
+        int id = v.getId();
+        String email = mEmailField.getText().toString().trim();
+
+
+        if(id  == R.id.sendPassword1 && !sendEmailFirst) {
+            sendEmailFirst = true;
+            String subject = "Восстановление пароля";
+            String message = getRandomIntegerBetweenRange().trim();
+            SendMail sm = new SendMail(this, email, subject, message);
+            sm.execute();
+            sendPasswordSuccess1.setVisibility(View.VISIBLE);
+        }
+        else if(id == R.id.sendPassword1){
+            showDialog("Пароль уже отправлен",newPasswordActivity.this);
+        }
+
     }
 
 
     public static String getRandomIntegerBetweenRange() {
+        StringBuilder s = new StringBuilder();
+        int max = 9;
+        int min = 0;
+        Random rnd = new Random(System.currentTimeMillis());
+        for (int i = 0; i <6 ; i++) {
+            int randomInteger = min + rnd.nextInt(max - min + 1);
+            s.append(randomInteger);
 
-        int first = (int) (Math.random() * ((9 - 1) + 1)) + 1;
-        int second = (int) (Math.random() * ((9 - 1) + 1)) + 1;
-        int third = (int) (Math.random() * ((9 - 1) + 1)) + 1;
-        int fourth = (int) (Math.random() * ((9 - 1) + 1)) + 1;
-        int fiveth = (int) (Math.random() * ((9 - 1) + 1)) + 1;
-        int sixth = (int) (Math.random() * ((9 - 1) + 1)) + 1;
+        }
+        Log.v("RESYLT", String.valueOf(s));
 
 
-        return ""+first+second+third+fourth+fiveth+sixth;
+
+
+        return s.toString();
     }
     }
 

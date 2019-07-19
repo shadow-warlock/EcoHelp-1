@@ -58,7 +58,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
 
-    api group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
+
+
+
 // https://mvnrepository.com/artifact/com.google.zxing/core
     implementation group: 'com.google.zxing', name: 'core', version: '3.4.0'
 
@@ -77,6 +79,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.19.0'
     testImplementation "org.robolectric:robolectric:3.2.2"
     implementation project(path: ':barcode-reader')
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
+
 }
 
 

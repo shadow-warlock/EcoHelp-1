@@ -1,5 +1,5 @@
 package com.example.Classes;
-
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -22,7 +22,8 @@ import javax.mail.internet.MimeMessage;
 //Class is extending AsyncTask because this class is going to perform a networking operation
 public class SendMail extends AsyncTask<Void,Void,Void> {
 
-    //Declaring Variables
+
+    @SuppressLint("StaticFieldLeak")
     private Context context;
     private Session session;
 
@@ -32,7 +33,7 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
     private String message;
 
     //Progressdialog to show while sending email
-    private ProgressDialog progressDialog;
+    private ProgressDialog mProgressDialog;
 
     //Class Constructor
     public SendMail(Context context, String email, String subject, String message){
@@ -42,19 +43,34 @@ public class SendMail extends AsyncTask<Void,Void,Void> {
         this.subject = subject;
         this.message = message;
     }
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.setMessage("Отправка");
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         //Showing progress dialog while sending email
-        progressDialog = ProgressDialog.show(context,"Sending message","Please wait...",false,false);
+        showProgressDialog();
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         //Dismissing the progress dialog
-        progressDialog.dismiss();
+        hideProgressDialog();
         //Showing a success message
         Toast.makeText(context,"Message Sent",Toast.LENGTH_LONG).show();
     }

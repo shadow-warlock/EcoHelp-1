@@ -7,4 +7,5 @@
     android:layout_height="@dimen/materialize_toolbar"
     android:background="@color/grey_500"
     android:minHeight="?attr/actionBarSize"
+
     android:theme="?attr/actionBarTheme" />
