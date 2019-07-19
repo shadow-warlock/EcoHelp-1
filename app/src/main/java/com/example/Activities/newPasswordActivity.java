@@ -52,7 +52,6 @@ TextView sendPasswordSuccess1;
 
     }
 
-
     public static String getRandomIntegerBetweenRange() {
         StringBuilder s = new StringBuilder();
         int max = 9;
