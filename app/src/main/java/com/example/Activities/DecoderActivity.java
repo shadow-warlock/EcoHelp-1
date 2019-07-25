@@ -1,21 +1,21 @@
 package com.example.Activities;
 
-import android.content.Intent;
-
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
-import com.example.Classes.QRCode;
+import com.example.Classes.Pojo.QRCode;
 import com.example.Classes.Service;
+import com.example.Classes.Dialogs.invalidQrcodeDialog;
+import com.example.Classes.Dialogs.readBarcodeSuccessDialog;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import com.example.ecohelp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -54,7 +53,8 @@ public class DecoderActivity extends BaseActivity
   List<QRCode> qrCodeList;
     Boolean findSuccess = false;
     private CameraManager myCamera;
-
+    DialogFragment dlg1;
+    DialogFragment dlg2;
   private ViewGroup mainLayout;
   ImageView flashlight;
     private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
@@ -74,8 +74,9 @@ public class DecoderActivity extends BaseActivity
     isOnline(DecoderActivity.this);
     flashlight = findViewById(R.id.flashlight);
       mBarcodeReaderFragment = attachBarcodeReaderFragment();
+      dlg2 = new readBarcodeSuccessDialog();
 
-
+        dlg1 = new invalidQrcodeDialog();
     mainLayout = findViewById(R.id.main_layout);
 
 
@@ -128,25 +129,11 @@ public class DecoderActivity extends BaseActivity
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 long coinsAmount = dataSnapshot.getValue(Long.class);
                                 coinsAmountRef.getRef().setValue(coinsAmount + Integer.parseInt(QrCodeCoinsAmount) );
-                                AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
-                                builder.setTitle("Оповещение")
-                                        .setMessage("Вам начислено " + QrCodeCoinsAmount + " баллов")
-                                        .setCancelable(false)
-                                        .setNegativeButton("ОК",
-                                                (dialog, id) -> {
-                                                    mBarcodeReaderFragment.resumeScanning();
-
-                                                });
-                                builder.setPositiveButton("В магазин", (dialog, which) -> {
-                                    Intent intent = new Intent(DecoderActivity.this, ShopActivity.class);
-                                    startActivity(intent);
-                                    finish();
-
-                                });
-
-                                AlertDialog alert = builder.create();
-                                Log.v("dssdwd", "" + alert.isShowing());
-                                alert.show();
+                                Bundle bundle = new Bundle();
+                                bundle.clear();
+                                bundle.putString("amount",QrCodeCoinsAmount);
+                                dlg2.setArguments(bundle);
+                                dlg2.show(getSupportFragmentManager(),"dlg2");
 
 
                             }
@@ -162,19 +149,8 @@ public class DecoderActivity extends BaseActivity
 
                 }
                 if(!findSuccess){
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(DecoderActivity.this);
-                    builder.setTitle("Информация")
-                            .setMessage("QR-код недействителен")
-                            .setCancelable(false)
-                            .setNegativeButton("ОК",
-                                    (dialog, id) -> {
-                                        mBarcodeReaderFragment.resumeScanning();
-                                    });
-                    final AlertDialog alert = builder.create();
-
-
-                    alert.show();
+                dlg1.show(getSupportFragmentManager(),"dlg1");
+                mBarcodeReaderFragment.resumeScanning();
 
 
                 }

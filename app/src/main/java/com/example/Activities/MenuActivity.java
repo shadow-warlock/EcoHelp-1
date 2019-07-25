@@ -1,7 +1,6 @@
 package com.example.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -13,10 +12,10 @@ import androidx.appcompat.widget.Toolbar;
 
 
 
-import com.example.Classes.Pandomats;
+import com.example.Classes.Pojo.Pandomats;
 import com.example.Classes.Service;
-import com.example.Classes.informarionPandomatsDialog;
-import com.example.Classes.informationWithoutImageDialog;
+import com.example.Classes.Dialogs.informarionPandomatsDialog;
+import com.example.Classes.Dialogs.informationWithoutImageDialog;
 import com.example.ecohelp.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,6 +47,7 @@ public class MenuActivity extends BaseActivity
     private List<LatLng> places = new ArrayList<>();
 Context context = MenuActivity.this;
     DialogFragment dlg1;
+    Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,13 +56,14 @@ Context context = MenuActivity.this;
         isOnline(MenuActivity.this);
 
         setContentView(R.layout.activity_menu);
-        Toolbar toolbar = findViewById(R.id.mytoolbar);
+        toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
-        Drawer(toolbar,MenuActivity.this,MenuActivity.this);
 
+        Drawer(toolbar,MenuActivity.this,MenuActivity.this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Аппараты");
         }
+
 
         dlg1 = new informarionPandomatsDialog();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -94,8 +95,10 @@ Context context = MenuActivity.this;
     }
 
 
+
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setOnMarkerClickListener(this);
+
 
         pandomats = new ArrayList<>();
         Service.getInstance().getJSONAPlaceApi()
@@ -107,6 +110,7 @@ Context context = MenuActivity.this;
                     public void onResponse(@NonNull Call<List<Pandomats>> call, @NonNull Response<List<Pandomats>> response) {
                         Log.v("SUCCESS", "SUCCESS");
                         pandomats.addAll(Objects.requireNonNull(response.body()));
+
 
                         MarkerOptions[] markers = new MarkerOptions[pandomats.size()];
                         for (int i = 0; i < pandomats.size(); ) {
@@ -154,17 +158,28 @@ Context context = MenuActivity.this;
         String i = marker.getId();
         Bundle bundle = new Bundle();
         int x = Integer.parseInt(i.substring(1));
+        String Model = pandomats.get(x).getModel();
+        String Address = pandomats.get(x).getAddress();
+        String falseOccupancy = pandomats.get(x).getLastDeviceData().getOccupancy().getValue();
         if(pandomats.get(x).getImage() !=null) {
+
             bundle.clear();
             dlg1 = new informarionPandomatsDialog();
-            bundle.putInt("someValue", x);
+            bundle.putString("Address",Address);
+            bundle.putString("Model",Model);
+            bundle.putString("falseOccupnacy",falseOccupancy);
+            String image = pandomats.get(x).getImage();
+            bundle.putString("image",image);
             dlg1.setArguments(bundle);
             dlg1.show(getSupportFragmentManager(), "wdw");
         }
         else {
             bundle.clear();
             dlg2 = new informationWithoutImageDialog();
-            bundle.putInt("someValue",x);
+            bundle.putString("Address",Address);
+            bundle.putString("Model",Model);
+            bundle.putString("falseOccupnacy",falseOccupancy);
+
             dlg2.setArguments(bundle);
             dlg2.show(getSupportFragmentManager(),"wdw");
 

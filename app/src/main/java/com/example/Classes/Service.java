@@ -1,5 +1,10 @@
 package com.example.Classes;
 
+import com.example.Classes.API.JsonCouponsApi;
+import com.example.Classes.API.JsonGetBarcodeByCouponApi;
+import com.example.Classes.API.JsonPlaceApi;
+import com.example.Classes.API.JsonQRCodeApi;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -25,11 +30,9 @@ public class Service {
     }
     public JsonCouponsApi getJSONCouponsApi(){
         return mRetrofit.create(JsonCouponsApi.class); }
-    public JsonBarcodeApi getJSONBarCodeApi(){
-        return mRetrofit.create(JsonBarcodeApi.class); }
     public JsonQRCodeApi getJsonQRCodeApi(){
         return mRetrofit.create(JsonQRCodeApi.class); }
-    public JsonGetBarcodeByCouponApi JSONGetBarcodeByCouponApi(){
+    public JsonGetBarcodeByCouponApi getJSONGetBarcodeByCouponApi(){
         return mRetrofit.create(JsonGetBarcodeByCouponApi.class); }
 
 }

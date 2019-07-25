@@ -2,22 +2,16 @@ package com.example.Activities;
 
 import android.content.Intent;
 
-import androidx.annotation.NonNull;
-import com.google.android.material.navigation.NavigationView;
 import androidx.fragment.app.DialogFragment;
 
 import android.os.Bundle;
 
 
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.View;
 import androidx.appcompat.widget.Toolbar;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 
-import com.example.Classes.ChooseAvatarDialog;
+import com.example.Classes.Dialogs.ChooseAvatarDialog;
 import com.example.ecohelp.R;
 import com.google.firebase.auth.FirebaseAuth;
 

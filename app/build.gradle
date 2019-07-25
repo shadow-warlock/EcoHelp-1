@@ -59,15 +59,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
 
-
-
 // https://mvnrepository.com/artifact/com.google.zxing/core
     implementation group: 'com.google.zxing', name: 'core', version: '3.4.0'
 
 
-
-    implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-auth:18.0.0'
+    implementation 'com.google.firebase:firebase-core:17.0.1'
+    implementation 'com.google.firebase:firebase-auth:18.1.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.firebase:firebase-database:18.0.0'
     implementation 'com.firebaseui:firebase-ui-database:3.1.0'

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ecohelp">
 
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -22,7 +21,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,RtlEnabled"
         tools:targetApi="donut">
-
+        <activity android:name="com.example.Activities.newNewPasswordActivity"></activity>
         <activity android:name="com.example.Activities.oldCouponsActivity" />
         <activity android:name="com.example.Activities.changePasswordActivity" />
         <activity
@@ -41,7 +40,7 @@
         <activity
             android:name="com.example.Activities.MenuActivity"
             android:label="@string/title_activity_test"
-
+            android:theme="@style/AppTheme"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name="com.example.Activities.ShopActivity"
@@ -51,8 +50,7 @@
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name="com.example.Activities.MainActivity"
-            tools:ignore="InnerclassSeparator">
-        </activity>
+            tools:ignore="InnerclassSeparator"></activity>
         <activity
             android:name="com.example.Activities.LibraryActivity"
             tools:ignore="InnerclassSeparator" />
@@ -60,10 +58,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="barcode"/>
+            android:value="barcode" />
 
         <activity
             android:name="com.example.Activities.BaseActivity"

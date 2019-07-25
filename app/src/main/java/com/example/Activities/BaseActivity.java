@@ -155,25 +155,31 @@ public class BaseActivity extends AppCompatActivity {
                                         .withIdentifier(5)
                         )
                         .withOnDrawerItemClickListener((view, i, iDrawerItem) -> {
+                           
                             if(iDrawerItem.getIdentifier() == 1 && !Activity.equals("Menu")){
                                 Intent intent = new Intent(context,MenuActivity.class);
                                 startActivity(intent);
+
                             }
                             else if(iDrawerItem.getIdentifier() == 2 && !Activity.equals("Scaner")){
                                 Intent intent = new Intent(context,DecoderActivity.class);
                                 startActivity(intent);
+
                             }
                             else if(iDrawerItem.getIdentifier() == 3 && !Activity.equals("Shop")){
                                 Intent intent = new Intent(context,ShopActivity.class);
                                 startActivity(intent);
+
                             }
                             else if(iDrawerItem.getIdentifier() == 4 && !Activity.equals("oldCoupons")){
                                 Intent intent = new Intent(context,oldCouponsActivity.class);
                                 startActivity(intent);
+
                             }
 
                             return false;
                         })
+
                         .build();
 
                 Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);

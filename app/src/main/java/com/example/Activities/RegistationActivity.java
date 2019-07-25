@@ -126,12 +126,7 @@ public class RegistationActivity extends BaseActivity {
 
         mDatabase.child("users").child(getUid()).setValue(user);
         mDatabase.child("users").child(getUid()).child("Avatar").setValue("1");
-        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka100").setValue(0);
-        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka300").setValue(0);
-        mDatabase.child("users").child(getUid()).child("coupons").child("petiarochka").child("petiarochka500").setValue(0);
-        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta100").setValue(0);
-        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta300").setValue(0);
-        mDatabase.child("users").child(getUid()).child("coupons").child("lenta").child("lenta500").setValue(0);
+        mDatabase.child("users").child(getUid()).child("Coupons").child("NumberCoupons").setValue(0);
     }
     public void Onclick(View v){
         String repeatPassword =  RepeatPassword.getText().toString();

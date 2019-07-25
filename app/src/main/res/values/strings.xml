@@ -66,10 +66,11 @@
     <string name="scanQrCode">"        "Отсканируйте QR-код,\nполученный после сдачи ТБО</string>
     <string name="sendPassword">Выслать пароль</string>
     <string name="sendPasswordAgain">Пароль успешно выслан \n  на указанный Email</string>
-    <string name="inputPasswordTimer">Введите пароль 01:59</string>
+
     <string name="senAgain2">Выслать пароль еще раз</string>
-    <string name="sendAgain3">Пароль успешно выслан еще раз \n "           "на указанный E-mail</string>
-    <string name="ok">OK</string>    <string name="grant_permission">Получение прав</string>
+    <string name="sendAgain3">Пароль успешно выслан еще раз \n на указанный E-mail</string>
+    <string name="ok">Ок</string>
+    <string name="grant_permission">Получение прав</string>
     <string name="permission_camera">Этому приложению нужна права на камеру для скана QR кода</string>
     <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
@@ -86,6 +87,14 @@
     <string name="cancel">Отмена</string>
     <string name="scanQrcodeHorizontal">Отсканируйте QR код, \n полученный  \n после сдачи ТБО</string>
     <string name="wrongEmail">Неверно введен E-mail</string>
+    <string name="inputPassword2">Введите пароль</string>
+    <string name="changePassword">Сменить пароль</string>
+    <string name="newPassword">Новый пароль</string>
+    <string name="qrinvalid">QR-код недействителен</string>
+    <string name="notice">Оповещение</string>
+    <string name="inShop">В магазин</string>
+    <string name="buyCoupon">Покупка купона</string>
+    <string name="buy">Купить</string>
 
 
 </resources>
