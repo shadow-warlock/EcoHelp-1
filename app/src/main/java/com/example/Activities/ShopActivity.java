@@ -1,9 +1,6 @@
 package com.example.Activities;
 
-import android.content.Context;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 
 import android.os.Bundle;
 
@@ -16,15 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.Classes.Dialogs.confirmationOfPurchaseCouponsDialog;
 import com.example.Classes.ExpandingRecycler.CouponsRecycler;
 import com.example.Classes.ExpandingRecycler.ExpandingRecycler;
-import com.example.Classes.Pojo.BarCode;
 import com.example.Classes.Pojo.Coupons;
 import com.example.Classes.Service;
 import com.example.ecohelp.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +28,7 @@ import retrofit2.Response;
 
 
 public class ShopActivity extends BaseActivity  {
-    Context context;
+
     List<Coupons> coupons;
     DialogFragment dlg;
 
@@ -45,7 +37,7 @@ public class ShopActivity extends BaseActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
         Activity = "Shop";
-        context = ShopActivity.this;
+
 
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
@@ -71,6 +63,7 @@ public class ShopActivity extends BaseActivity  {
 
 
 
+
         //EXPANDING RECYCLER ----- DANGEROUS!!!!!!!!
         List<CouponsRecycler> couponsRecyclerList = null;
 
@@ -80,6 +73,9 @@ public class ShopActivity extends BaseActivity  {
         ExpandingRecycler adapter = new ExpandingRecycler(couponsRecyclerList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+
+        setInitialData();
 
 
 
@@ -123,7 +119,7 @@ public class ShopActivity extends BaseActivity  {
     Boolean haveBarcode;
 
 
-    //Ниже будет описан метод который в дальнейшем будет использован как onExpandableItemClick и  помещен в ExpandableItemRecyclerItem
+    //Ниже будет описан метод который в дальнейшем будет использован как onExpandableItemClick и  помещен в ExpandableItemRecyclerAdapter
     public void onClickExpandableItem() {
 
         Bundle bundle = new Bundle();

@@ -2,24 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical"
-    >
+    android:baselineAligned="false"
 
-    <include
-        android:id="@+id/mytoolbar"
-        layout="@layout/toolbar"
-        android:visibility="visible"
-        tools:visibility="visible" />
+    android:orientation="vertical"
+    tools:context="com.example.Activities.oldCouponsActivity">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <include
+            layout="@layout/toolbar"
+            android:id="@+id/mytoolbar" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
+        android:id="@+id/item"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-       />
+        android:layout_height="match_parent" />
+
 
 </LinearLayout>
