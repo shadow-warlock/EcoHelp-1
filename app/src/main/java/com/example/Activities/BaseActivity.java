@@ -97,13 +97,17 @@ public class BaseActivity extends AppCompatActivity {
 
 
 
-
-                    if (Avatar.equals("1")) {
-                        avatar = (R.drawable.a1);
-                    }
-                    if (Avatar.equals("2")) {
-                        avatar = (R.drawable.a2);
-                    }
+                   if(Avatar!=null) {
+                       if (Avatar.equals("1")) {
+                           avatar = (R.drawable.a1);
+                       }
+                       if (Avatar.equals("2")) {
+                           avatar = (R.drawable.a2);
+                       }
+                   }
+                   else {
+                       avatar = R.drawable.a1;
+                   }
 
 
                 IProfile profile = new ProfileDrawerItem()
