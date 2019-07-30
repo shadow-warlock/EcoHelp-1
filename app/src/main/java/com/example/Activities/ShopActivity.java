@@ -120,7 +120,26 @@ public class ShopActivity extends BaseActivity  {
 
 
     //Ниже будет описан метод который в дальнейшем будет использован как onExpandableItemClick и  помещен в ExpandableItemRecyclerAdapter
+    public void onClickExpandableItem() {
 
+        Bundle bundle = new Bundle();
+
+
+        int id = expandableItem.getId;
+        int cost = expandableitem.getCost;
+        String end = expandableItem.getEnd;
+        String info = expandableItem.getInfo;
+        String uid = getUid();
+        bundle.putString("uid",uid);
+        bundle.putString("end",end);
+        bundle.putString("info",info);
+        bundle.putInt("id",id);
+        bundle.putInt("cost",cost);
+        dlg.setArguments(bundle);
+        dlg.show(getSupportFragmentManager(),"dlg");
+
+
+    }
 
 
 

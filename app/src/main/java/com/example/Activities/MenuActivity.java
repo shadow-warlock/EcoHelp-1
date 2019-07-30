@@ -143,6 +143,9 @@ Context context = MenuActivity.this;
                     @Override
                     public void onFailure(@NonNull Call<List<Pandomats>> call, @NonNull Throwable t) {
 
+                        t.printStackTrace();
+                        Log.v("FAILED",t.toString());
+
                     }
                 });
 
