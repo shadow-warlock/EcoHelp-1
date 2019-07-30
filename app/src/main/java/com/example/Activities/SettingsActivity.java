@@ -55,18 +55,6 @@ public class SettingsActivity extends BaseActivity{
         onBackPressed();  //или this.finish или что то свое
         return true;
     }
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.button) {
-            dlg1.show(getSupportFragmentManager(), "wdw");
 
-        }
-        if (i == R.id.button3){
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        }
     }
 
