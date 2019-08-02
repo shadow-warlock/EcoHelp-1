@@ -1,10 +1,16 @@
 package com.example.Activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.graphics.PointF;
+import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.example.Classes.Pojo.QRCode;
 import com.example.Classes.Service;
 import com.example.Classes.Dialogs.invalidQrcodeDialog;
@@ -21,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,38 +36,44 @@ import android.widget.ImageView;
 
 
 import com.example.ecohelp.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.notbytes.barcode_reader.BarcodeReaderFragment;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
+import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
+import static android.hardware.Camera.Parameters.FLASH_MODE_TORCH;
+
 
 public class DecoderActivity extends BaseActivity
-    implements ActivityCompat.OnRequestPermissionsResultCallback , BarcodeReaderFragment.BarcodeReaderListener{
+    implements ActivityCompat.OnRequestPermissionsResultCallback, QRCodeReaderView.OnQRCodeReadListener {
 
-  private static final int MY_PERMISSION_REQUEST_CAMERA = 0;
+
   List<QRCode> qrCodeList;
     Boolean findSuccess = false;
-    private CameraManager myCamera;
+
     DialogFragment dlg1;
     DialogFragment dlg2;
-  private ViewGroup mainLayout;
+
   ImageView flashlight;
-    private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
+    private QRCodeReaderView qrCodeReaderView;
+    private static final int MY_PERMISSION_REQUEST_CAMERA = 0;
 
-
-    private BarcodeReaderFragment mBarcodeReaderFragment;
+    private ViewGroup mainLayout;
 
     public DecoderActivity() {
     }
@@ -70,14 +83,24 @@ public class DecoderActivity extends BaseActivity
     super.onCreate(savedInstanceState);
     Activity = "Scaner";
 
+
     setContentView(R.layout.activity_decoder);
     isOnline(DecoderActivity.this);
     flashlight = findViewById(R.id.flashlight);
-      mBarcodeReaderFragment = attachBarcodeReaderFragment();
-      dlg2 = new readBarcodeSuccessDialog();
 
-        dlg1 = new invalidQrcodeDialog();
-    mainLayout = findViewById(R.id.main_layout);
+      dlg2 = new readBarcodeSuccessDialog();
+      dlg1 = new invalidQrcodeDialog();
+        mainLayout = findViewById(R.id.main_layout);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            initQRCodeReaderView();
+
+        } else {
+            requestCameraPermission();
+        }
+
+
 
 
     Toolbar toolbar = findViewById(R.id.mytoolbar);
@@ -89,107 +112,51 @@ public class DecoderActivity extends BaseActivity
 
 
   }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                                     @NonNull int[] grantResults) {
+        if (requestCode != MY_PERMISSION_REQUEST_CAMERA) {
+            return;
+        }
 
-    private BarcodeReaderFragment attachBarcodeReaderFragment() {
-        final FragmentManager supportFragmentManager = getSupportFragmentManager();
-        final FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        BarcodeReaderFragment fragment = BarcodeReaderFragment.newInstance(true, false);
-        fragment.setListener(this);
-        fragmentTransaction.replace(R.id.fm_container, fragment);
-        fragmentTransaction.commitAllowingStateLoss();
-        return fragment;
+        if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Snackbar.make(mainLayout, "Camera permission was granted.", Snackbar.LENGTH_SHORT).show();
+            initQRCodeReaderView();
+        } else {
+            Snackbar.make(mainLayout, "Camera permission request was denied.", Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+    }
+    public void initQRCodeReaderView(){
+        qrCodeReaderView = findViewById(R.id.camera_view);
+        qrCodeReaderView.setOnQRCodeReadListener(this);
+        qrCodeReaderView.setQRDecodingEnabled(true);
+        qrCodeReaderView.setAutofocusInterval(2000L);
+        qrCodeReaderView.setBackCamera();
+        qrCodeReaderView.startCamera();
     }
 
 
-    @Override
-    public void onScanned(Barcode barcode) {
-      String text = barcode.displayValue;
-      Log.v("QRCODE =",text);
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        mBarcodeReaderFragment.pauseScanning();
 
-      qrCodeList = new ArrayList<>();
-        Service.getInstance().getJsonQRCodeApi().loadList().enqueue(new Callback<List<QRCode>>() {
-            @Override
-            public void onResponse(Call<List<QRCode>> call, Response<List<QRCode>> response) {
-                qrCodeList.addAll(Objects.requireNonNull(response.body()));
-
-                for (int j = 0; j <qrCodeList.size() ; j++) {
-                    if(text.equals(qrCodeList.get(j).getKey())) {
-                        findSuccess = true;
-                        String QrCodeCoinsAmount = qrCodeList.get(j).getValue();
-                        DatabaseReference coinsAmountRef = rootRef.child("users").child(getUid()).child("coinsAmount");
-
-
-                        ValueEventListener valueEventListener = new ValueEventListener() {
-
-
-
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                long coinsAmount = dataSnapshot.getValue(Long.class);
-                                coinsAmountRef.getRef().setValue(coinsAmount + Integer.parseInt(QrCodeCoinsAmount) );
-                                Bundle bundle = new Bundle();
-                                bundle.clear();
-                                bundle.putString("amount",QrCodeCoinsAmount);
-                                dlg2.setArguments(bundle);
-                                dlg2.show(getSupportFragmentManager(),"dlg2");
-
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        };
-                        coinsAmountRef.addListenerForSingleValueEvent(valueEventListener);
-                        break;
-                    }
-
+    private void requestCameraPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            Snackbar.make(mainLayout, "Camera access is required to display the camera preview.",
+                    Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    ActivityCompat.requestPermissions(DecoderActivity.this, new String[] {
+                            Manifest.permission.CAMERA
+                    }, MY_PERMISSION_REQUEST_CAMERA);
                 }
-                if(!findSuccess){
-                dlg1.show(getSupportFragmentManager(),"dlg1");
-                mBarcodeReaderFragment.resumeScanning();
-
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<QRCode>> call, Throwable t) {
-
-            }
-        });
-
-
-
+            }).show();
+        } else {
+            Snackbar.make(mainLayout, "Permission is not available. Requesting camera permission.",
+                    Snackbar.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.CAMERA
+            }, MY_PERMISSION_REQUEST_CAMERA);
+        }
     }
-
-    @Override
-    public void onScannedMultiple(List<Barcode> barcodes) {
-
-    }
-
-    @Override
-    public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
-
-    }
-
-    @Override
-    public void onScanError(String errorMessage) {
-      showDialog(errorMessage,DecoderActivity.this);
-    }
-
-    @Override
-    public void onCameraPermissionDenied() {
-      showDialog("Отказано в доступе к камере", DecoderActivity.this);
-
-    }
-
-
-
+    String LastText = "";
 
 
   @Override
@@ -198,25 +165,85 @@ public class DecoderActivity extends BaseActivity
     return true;
   }
 
-
-
   int i = 1;
   public void onClickDecoder(View v) throws CameraAccessException {
+      if(qrCodeReaderView!=null) {
+          i++;
+          if (i % 2 != 0) {
+              flashlight.setImageResource(R.drawable.flashlightoff);
+              qrCodeReaderView.setTorchEnabled(false);
 
-
-
-
-
-    i++;
-    if(i %2 != 0){
-      flashlight.setImageResource(R.drawable.flashlightoff);
-      mBarcodeReaderFragment.setUseFlash(false);
-    }
-    else {
-      flashlight.setImageResource(R.drawable.flashlighton);
-      mBarcodeReaderFragment.setUseFlash(true);
-    }
+          } else {
+              flashlight.setImageResource(R.drawable.flashlighton);
+              qrCodeReaderView.setTorchEnabled(true);
+          }
+      }
   }
 
 
+    @Override
+    public void onQRCodeRead(String text, PointF[] points) {
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        qrCodeReaderView.setQRDecodingEnabled(false);
+        if(!text.equals(LastText)) {
+            LastText = text;
+
+
+            qrCodeList = new ArrayList<>();
+            Service.getInstance().getJsonQRCodeApi().loadList().enqueue(new Callback<List<QRCode>>() {
+                @Override
+                public void onResponse(Call<List<QRCode>> call, Response<List<QRCode>> response) {
+                    qrCodeList.addAll(Objects.requireNonNull(response.body()));
+
+                    for (int j = 0; j < qrCodeList.size(); j++) {
+                        if (text.equals(qrCodeList.get(j).getKey())) {
+                            findSuccess = true;
+                            String QrCodeCoinsAmount = qrCodeList.get(j).getValue();
+                            DatabaseReference coinsAmountRef = rootRef.child("users").child(getUid()).child("coinsAmount");
+
+
+                            ValueEventListener valueEventListener = new ValueEventListener() {
+
+
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    long coinsAmount = dataSnapshot.getValue(Long.class);
+                                    coinsAmountRef.getRef().setValue(coinsAmount + Integer.parseInt(QrCodeCoinsAmount));
+                                    Bundle bundle = new Bundle();
+                                    bundle.clear();
+                                    bundle.putString("amount", QrCodeCoinsAmount);
+                                    dlg2.setArguments(bundle);
+                                    dlg2.show(getSupportFragmentManager(), "dlg2");
+
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            };
+                            coinsAmountRef.addListenerForSingleValueEvent(valueEventListener);
+                            break;
+                        }
+
+                    }
+                    if (!findSuccess) {
+                        dlg1.show(getSupportFragmentManager(), "dlg1");
+
+                        qrCodeReaderView.setQRDecodingEnabled(true);
+
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<List<QRCode>> call, Throwable t) {
+
+                }
+            });
+        }
+
 }
+    }

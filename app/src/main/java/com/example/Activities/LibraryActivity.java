@@ -1,6 +1,7 @@
 package com.example.Activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -11,6 +12,8 @@ import androidx.appcompat.widget.Toolbar;
 
 
 import com.example.Classes.LibraryAdapter;
+import com.example.Classes.Pojo.BarCode;
+import com.example.Classes.Service;
 import com.example.Classes.couponsLibrary;
 import com.example.ecohelp.R;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class LibraryActivity extends BaseActivity {
@@ -49,8 +55,8 @@ public class LibraryActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Купоны");
         }
-        checkBox = findViewById(R.id.checkBox2);
-        checkBox.setVisibility(View.GONE);
+
+
 
 
     }
@@ -63,11 +69,31 @@ public class LibraryActivity extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Long numberCoupons = dataSnapshot.child("Coupons").child("NumberCoupons").getValue(Long.class);
-                for (int i = 0; i < numberCoupons; i++) {
+                for (int i = 0; i < numberCoupons;i++) {
 
                     String info = dataSnapshot.child("Coupons").child(String.valueOf(i)).child("info").getValue(String.class);
                     String end = dataSnapshot.child("Coupons").child(String.valueOf(i)).child("end").getValue(String.class);
-                    couponsLibraryList.add(new couponsLibrary(info, end));
+                    String id = dataSnapshot.child("Coupons").child(String.valueOf(i)).child("id").getValue(String.class);
+                    Log.v("RECYCLERVIEW",end);
+
+
+                    Service.getInstance().getJSONGetBarcodeByCouponApi().getBarcodeWithId(Integer.parseInt(id)).enqueue(new Callback<BarCode>() {
+                        @Override
+                        public void onResponse(Call<BarCode> call, Response<BarCode> response) {
+                            BarCode barCode = response.body();
+                            String tag = barCode.getImage();
+                            couponsLibraryList.add(new couponsLibrary(info, end, tag));
+                            recyclerView.getAdapter().notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<BarCode> call, Throwable t) {
+
+                        }
+                    });
+
+
+
                 }
 
 

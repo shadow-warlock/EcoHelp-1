@@ -171,8 +171,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
          String account = acct.getEmail();
 
-         String username = acct.getDisplayName();
-
 
 
         showProgressDialog();
@@ -188,7 +186,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (!dataSnapshot.exists()) {
-                                    writeNewUser(account,username);
+                                    writeNewUser(account);
 
                                 }
 
@@ -231,13 +229,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-    private void writeNewUser( String email,String username) {
+    private void writeNewUser( String email) {
 
         GoogleUser user = new GoogleUser(email, 0);
 
         mDatabase.child("users").child(getUid()).setValue(user);
         mDatabase.child("users").child(getUid()).child("Avatar").setValue("1");
-        mDatabase.child("users").child(getUid()).child("username").setValue(username);
+
         mDatabase.child("users").child(getUid()).child("Coupons").child("NumberCoupons").setValue(0);
 
     }

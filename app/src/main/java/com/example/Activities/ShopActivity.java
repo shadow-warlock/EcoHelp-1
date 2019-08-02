@@ -125,16 +125,16 @@ public class ShopActivity extends BaseActivity  {
         Bundle bundle = new Bundle();
 
 
-        int id = expandableItem.getId;
-        int cost = expandableitem.getCost;
-        String end = expandableItem.getEnd;
-        String info = expandableItem.getInfo;
+      //  int id = expandableItem.getId;
+       /// int cost = expandableitem.getCost;
+        //String end = expandableItem.getEnd;
+       // String info = expandableItem.getInfo;
         String uid = getUid();
         bundle.putString("uid",uid);
-        bundle.putString("end",end);
-        bundle.putString("info",info);
-        bundle.putInt("id",id);
-        bundle.putInt("cost",cost);
+       // bundle.putString("end",end);
+      //  bundle.putString("info",info);
+       // bundle.putInt("id",id);
+        //bundle.putInt("cost",cost);
         dlg.setArguments(bundle);
         dlg.show(getSupportFragmentManager(),"dlg");
 

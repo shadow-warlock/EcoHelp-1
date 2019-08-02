@@ -20,7 +20,7 @@ public class Pandomats {
     private Double longitude;
     @SerializedName("lastDeviceData")
     @Expose
-    private LastDeviceData lastDeviceData;
+    private HashMap<String, Data> lastDeviceData;
     @SerializedName("image")
     @Expose
     private String image;
@@ -59,14 +59,14 @@ public class Pandomats {
         this.longitude = longitude;
     }
 
-
-    public LastDeviceData getLastDeviceData() {
+    public HashMap<String, Data> getLastDeviceData() {
         return lastDeviceData;
     }
 
-    public void setLastDeviceData(LastDeviceData lastDeviceData) {
+    public void setLastDeviceData(HashMap<String, Data> lastDeviceData) {
         this.lastDeviceData = lastDeviceData;
     }
+
     public String getImage() {
         return image;
     }

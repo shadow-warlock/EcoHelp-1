@@ -146,20 +146,20 @@ TextView chronometer;
 
 
         }
-        if(id== ){
-            String password = mPasswordField.getText().toString().trim();
-            if(!password.equals(message) || !generateSuccess){
-                showDialog("Пароль введён не правильно",newPasswordActivity.this);
-            }
-            else {
-                Intent intent = new Intent(this,newNewPasswordActivity.class);
-                intent.putExtra("uID",uId);
-                intent.putExtra("email",email);
-                startActivity(intent);
-                finish();
-            }
+     //   if(id==  ){
+       //     String password = mPasswordField.getText().toString().trim();
+         //   if(!password.equals(message) || !generateSuccess){
+           //     showDialog("Пароль введён не правильно",newPasswordActivity.this);
+           // }
+            //else {
+              //  Intent intent = new Intent(this,newNewPasswordActivity.class);
+                //intent.putExtra("uID",uId);
+               // intent.putExtra("email",email);
+                //startActivity(intent);
+                //finish();
+            //}
 
-        }
+        //}
 
 
 

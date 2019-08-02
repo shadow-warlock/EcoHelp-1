@@ -55,6 +55,7 @@ public class BaseActivity extends AppCompatActivity {
     public String Activity;
     Drawer result;
 
+
     private ProgressDialog mProgressDialog;
 
     public void showProgressDialog() {
@@ -175,8 +176,8 @@ public class BaseActivity extends AppCompatActivity {
                                 startActivity(intent);
 
                             }
-                            else if(iDrawerItem.getIdentifier() == 4 && !Activity.equals("oldCoupons")){
-                                Intent intent = new Intent(context,oldCouponsActivity.class);
+                            else if(iDrawerItem.getIdentifier() == 4 && !Activity.equals("Library")){
+                                Intent intent = new Intent(context,LibraryActivity.class);
                                 startActivity(intent);
 
                             }

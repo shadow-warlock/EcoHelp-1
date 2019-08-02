@@ -23,7 +23,6 @@
         tools:targetApi="donut">
         <activity android:name="com.example.Activities.newNewPasswordActivity"></activity>
         <activity android:name="com.example.Activities.oldCouponsActivity" />
-        <activity android:name="com.example.Activities.changePasswordActivity" />
         <activity
             android:name="com.example.Activities.splashScreenActivity"
             android:theme="@style/SplashTheme">

@@ -116,7 +116,7 @@ Context context = MenuActivity.this;
                         for (int i = 0; i < pandomats.size(); ) {
                             Double latitude = pandomats.get(i).getLatitude();
                             Double longitude = pandomats.get(i).getLongitude();
-                            String falseOccupancy = pandomats.get(i).getLastDeviceData().getOccupancy().getValue();
+                            String falseOccupancy = pandomats.get(i).getLastDeviceData().get("occupancy") == null ? "0" : pandomats.get(i).getLastDeviceData().get("occupancy").getValue();
                             int intOccupancy = Integer.parseInt(falseOccupancy);
                             places.add(new LatLng(latitude, longitude));
                             if (intOccupancy <= 70) {
@@ -163,7 +163,7 @@ Context context = MenuActivity.this;
         int x = Integer.parseInt(i.substring(1));
         String Model = pandomats.get(x).getModel();
         String Address = pandomats.get(x).getAddress();
-        String falseOccupancy = pandomats.get(x).getLastDeviceData().getOccupancy().getValue();
+        String falseOccupancy = pandomats.get(x).getLastDeviceData().get("occupancy").getValue();
         if(pandomats.get(x).getImage() !=null) {
 
             bundle.clear();

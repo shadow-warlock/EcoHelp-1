@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 
 
-public class SettingsActivity extends BaseActivity{
+public class SettingsActivity extends BaseActivity {
     DialogFragment dlg1;
 
 
@@ -30,11 +30,10 @@ public class SettingsActivity extends BaseActivity{
         Toolbar toolbar = findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);
         isOnline(SettingsActivity.this);
-        Drawer(toolbar, SettingsActivity.this,SettingsActivity.this);
+        Drawer(toolbar, SettingsActivity.this, SettingsActivity.this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Настройки");
         }
-
 
 
     }
@@ -55,18 +54,19 @@ public class SettingsActivity extends BaseActivity{
         onBackPressed();  //или this.finish или что то свое
         return true;
     }
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.button) {
-            dlg1.show(getSupportFragmentManager(), "wdw");
 
-        }
-        if (i == R.id.button3){
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        }
-    }
+   // public void onClick(View v) {
+     //   int i = v.getId();
+       // if (i == R.id.button) {
+         //   dlg1.show(getSupportFragmentManager(), "wdw");
+
+        //}
+        //if (i == R.id.button3) {
+          //  FirebaseAuth.getInstance().signOut();
+            //Intent intent = new Intent(this, MainActivity.class);
+            //startActivity(intent);
+           // finish();
+        //}
+    //}
+}
 

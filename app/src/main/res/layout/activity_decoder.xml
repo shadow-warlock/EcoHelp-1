@@ -47,13 +47,13 @@
             android:textColor="@color/md_black_1000"/>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/fm_container"
+    <com.dlazaro66.qrcodereaderview.QRCodeReaderView
+        android:id="@+id/camera_view"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_margin="4dp"
         android:layout_weight="0"
-        android:background="@color/colorAccent"
+
         android:visibility="visible"
         android:layout_gravity="center"/>
 
