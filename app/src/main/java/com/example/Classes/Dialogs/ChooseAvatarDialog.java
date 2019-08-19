@@ -13,8 +13,15 @@ import android.view.ViewGroup;
 
 import com.example.Activities.MenuActivity;
 import com.example.ecohelp.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ChooseAvatarDialog extends DialogFragment implements View.OnClickListener {
+    int AvatarNummber;
+    String uID;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -22,6 +29,8 @@ public class ChooseAvatarDialog extends DialogFragment implements View.OnClickLi
         @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.choose_avatar_dialog, null);
         v.findViewById(R.id.achievment2).setOnClickListener(this);
         v.findViewById(R.id.achievment1).setOnClickListener(this);
+        Bundle bundle = this.getArguments();
+        uID = bundle.getString("uID");
 
         return v;
 
@@ -30,24 +39,29 @@ public class ChooseAvatarDialog extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        Intent intent = new Intent(getActivity(), MenuActivity.class);
-
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference uidRef = rootRef.child("users").child(uID);
         if (i == R.id.achievment2){
-            int AvatarNummber = 1;
-            intent.putExtra("Avatar",AvatarNummber);
-            Log.v("dwdwdwd",""+ AvatarNummber);
-            startActivity(intent);
-            dismiss();
+             AvatarNummber = 1;
+
         }
         if (i == R.id.achievment1){
-            int AvatarNummber = 2;
-            intent.putExtra("Avatar",AvatarNummber);
-            startActivity(intent);
-            dismiss();
+             AvatarNummber = 2;
+
         }
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                uidRef.child("Avatar").setValue("" + AvatarNummber);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-
+            }
+        };
+        uidRef.addListenerForSingleValueEvent(valueEventListener);
+        dismiss();
 
     }
     public void onDismiss(DialogInterface dialog) {

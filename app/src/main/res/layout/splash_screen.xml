@@ -7,15 +7,9 @@
     <item>
 
         <bitmap
-            android:gravity="top"
-            android:src="@drawable/small_up"
+            android:src="@drawable/ierztdgez4u"
                   />
     </item>
-    <item>
-        <bitmap
-            android:gravity="bottom"
-            android:src="@drawable/small_down"
-            />
-    </item>
+
 
 </layer-list>

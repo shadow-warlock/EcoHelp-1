@@ -59,10 +59,9 @@ public class oldCouponsActivity extends BaseActivity {
                         String info = dataSnapshot.child("Coupons").child(String.valueOf(i)).child("info").getValue(String.class);
                         String end = dataSnapshot.child("Coupons").child(String.valueOf(i)).child("end").getValue(String.class);
                         Log.v("RECYCLERVIEW", end);
-                        couponsOldCouponsLibraryList.add(new couponsLibrary(info, end));
+                        couponsOldCouponsLibraryList.add(new couponsLibrary(info, end,"qwerty"));
                         recyclerView.getAdapter().notifyDataSetChanged();
                     }
-
                 }
 
 
@@ -73,6 +72,7 @@ public class oldCouponsActivity extends BaseActivity {
 
             }
         };
+        uidRef.addListenerForSingleValueEvent(valueEventListener);
     }
 }
 

@@ -1,6 +1,5 @@
 package com.example.Activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -15,7 +14,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.Classes.Pojo.Pandomats;
 import com.example.Classes.Service;
 import com.example.Classes.Dialogs.informarionPandomatsDialog;
-import com.example.Classes.Dialogs.informationWithoutImageDialog;
 import com.example.ecohelp.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,7 +43,6 @@ public class MenuActivity extends BaseActivity
 
     List<Pandomats> pandomats;
     private List<LatLng> places = new ArrayList<>();
-Context context = MenuActivity.this;
     DialogFragment dlg1;
     Toolbar toolbar;
 
@@ -64,34 +61,12 @@ Context context = MenuActivity.this;
             getSupportActionBar().setTitle("Аппараты");
         }
 
-
         dlg1 = new informarionPandomatsDialog();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference uidRef = rootRef.child("users").child(getUid());
-        int count = getIntent().getIntExtra("Avatar", 0);
-        Log.v("dwdwdwdwd", "" + count);
 
-        if (count != 0) {
-
-            ValueEventListener valueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    uidRef.child("Avatar").setValue("" + count);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            };
-            uidRef.addListenerForSingleValueEvent(valueEventListener);
-
-
-        }
     }
 
 
@@ -116,7 +91,7 @@ Context context = MenuActivity.this;
                         for (int i = 0; i < pandomats.size(); ) {
                             Double latitude = pandomats.get(i).getLatitude();
                             Double longitude = pandomats.get(i).getLongitude();
-                            String falseOccupancy = pandomats.get(i).getLastDeviceData().get("occupancy") == null ? "0" : pandomats.get(i).getLastDeviceData().get("occupancy").getValue();
+                            String falseOccupancy = pandomats.get(i).getLastDeviceData().get("occupancy") == null ? "0" : Objects.requireNonNull(pandomats.get(i).getLastDeviceData().get("occupancy")).getValue();
                             int intOccupancy = Integer.parseInt(falseOccupancy);
                             places.add(new LatLng(latitude, longitude));
                             if (intOccupancy <= 70) {
@@ -153,7 +128,7 @@ Context context = MenuActivity.this;
 
 
     }
-    DialogFragment dlg2;
+
 
 
     @Override
@@ -164,30 +139,15 @@ Context context = MenuActivity.this;
         String Model = pandomats.get(x).getModel();
         String Address = pandomats.get(x).getAddress();
         String falseOccupancy = pandomats.get(x).getLastDeviceData().get("occupancy").getValue();
-        if(pandomats.get(x).getImage() !=null) {
-
-            bundle.clear();
-            dlg1 = new informarionPandomatsDialog();
-            bundle.putString("Address",Address);
-            bundle.putString("Model",Model);
-            bundle.putString("falseOccupnacy",falseOccupancy);
-            String image = pandomats.get(x).getImage();
-            bundle.putString("image",image);
-            dlg1.setArguments(bundle);
-            dlg1.show(getSupportFragmentManager(), "wdw");
-        }
-        else {
-            bundle.clear();
-            dlg2 = new informationWithoutImageDialog();
-            bundle.putString("Address",Address);
-            bundle.putString("Model",Model);
-            bundle.putString("falseOccupnacy",falseOccupancy);
-
-            dlg2.setArguments(bundle);
-            dlg2.show(getSupportFragmentManager(),"wdw");
-
-
-        }
+        bundle.clear();
+        dlg1 = new informarionPandomatsDialog();
+        bundle.putString("Address",Address);
+        bundle.putString("Model",Model);
+        bundle.putString("falseOccupnacy",falseOccupancy);
+        String image = pandomats.get(x).getImage();
+        bundle.putString("image",image);
+        dlg1.setArguments(bundle);
+        dlg1.show(getSupportFragmentManager(), "wdw");
 
         return true;
     }

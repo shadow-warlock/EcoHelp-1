@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ok"
-            android:textColor="@color/blue_png"
+            android:textColor="#4eaf9c"
             android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>

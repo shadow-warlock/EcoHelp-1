@@ -34,13 +34,29 @@ public class informarionPandomatsDialog extends DialogFragment {
         String Model = bundle.getString("Model");
         String Address = bundle.getString("Address");
         String falseOccupancy = bundle.getString("falseOccupnacy");
+        int trueOccupancy  = Integer.parseInt(falseOccupancy);
         String moreInfo = ("Модель: "+Model+"\n"+ "Адрес: "+ Address);
-        String trueOccupancy = "Заполненность: "+falseOccupancy+"%";
+        String occupancyWithProcent = falseOccupancy+"%";
 
-        occupancy.setText(trueOccupancy);
+
+        occupancy.setText(occupancyWithProcent);
+        if(trueOccupancy<=70){
+            occupancy.setTextColor(getResources().getColor(R.color.color_green));
+        }
+        else if(trueOccupancy<90){
+            occupancy.setTextColor(getResources().getColor(R.color.yellow));
+        }
+        else{
+            occupancy.setTextColor(getResources().getColor(R.color.red));
+        }
+
+
         moreInformation.setText(moreInfo);
         if(image!=null) {
             new DownloadImageTask(imagePadomats).execute(image);
+        }
+        else {
+            imagePadomats.setImageResource(R.drawable.d6x8oayzi6a);
         }
 
         return v;

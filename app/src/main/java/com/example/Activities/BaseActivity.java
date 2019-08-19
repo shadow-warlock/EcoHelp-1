@@ -1,31 +1,17 @@
 package com.example.Activities;
 
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
+
 import androidx.annotation.NonNull;
-import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.ecohelp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,16 +25,10 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.InputStream;
 import java.util.Objects;
 
 public class BaseActivity extends AppCompatActivity {
@@ -94,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
                 String Avatar = dataSnapshot.child("Avatar").getValue(String.class);
                 Long coinsAmount = dataSnapshot.child("coinsAmount").getValue(Long.class);
 
-                String coinsView = "Баланс: " + coinsAmount;
+                String coinsView = "Баланс баллов: " + coinsAmount;
 
 
 
@@ -159,6 +139,12 @@ public class BaseActivity extends AppCompatActivity {
                                         .withIcon(R.drawable.oldcoupons)
                                         .withIdentifier(5)
                         )
+                            .addDrawerItems(
+                                   new PrimaryDrawerItem()
+                                           .withName("Настройки")
+                                           .withIcon(R.drawable.settings_icon)
+                                           .withIdentifier(6)
+                           )
                         .withOnDrawerItemClickListener((view, i, iDrawerItem) -> {
                            
                             if(iDrawerItem.getIdentifier() == 1 && !Activity.equals("Menu")){
@@ -180,6 +166,14 @@ public class BaseActivity extends AppCompatActivity {
                                 Intent intent = new Intent(context,LibraryActivity.class);
                                 startActivity(intent);
 
+                            }
+                            else if(iDrawerItem.getIdentifier()==5 && !Activity.equals("oldCoupons")){
+                                Intent intent = new Intent(context,oldCouponsActivity.class);
+                                startActivity(intent);
+                            }
+                            else if(iDrawerItem.getIdentifier()==6 && !Activity.equals("Settings")){
+                                Intent intent = new Intent(context,SettingsActivity.class);
+                                startActivity(intent);
                             }
 
                             return false;
@@ -229,7 +223,7 @@ public class BaseActivity extends AppCompatActivity {
 
 
 
-    public boolean isOnline(Context context)
+    public void isOnline(Context context)
     {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -244,9 +238,7 @@ public class BaseActivity extends AppCompatActivity {
                             (dialog, id) -> dialog.cancel());
             AlertDialog alert = builder.create();
             alert.show();
-            return true;
         }
-        return false;
     }
 
     public void showDialog(String message,Context context){

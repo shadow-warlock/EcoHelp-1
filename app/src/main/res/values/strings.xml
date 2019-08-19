@@ -95,6 +95,9 @@
     <string name="inShop">В магазин</string>
     <string name="buyCoupon">Покупка купона</string>
     <string name="buy">Купить</string>
+    <string name="next">Далее</string>
+    <string name="change_avatar">Сменить аватар</string>
+    <string name="license_agree">Лицензионное соглашение</string>
 
 
 </resources>

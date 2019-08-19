@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.Classes.SendMail;
 import com.example.ecohelp.R;
@@ -31,6 +32,7 @@ Button sendPassword1;
 TextView sendPasswordSuccess1;
 TextView wrongEmail;
 EditText mPasswordField;
+Button next;
 
 TextView chronometer;
     @Override
@@ -42,19 +44,19 @@ TextView chronometer;
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Восстановление пароля");
         }
+
+
+
         sendPasswordSuccess1 = findViewById(R.id.textView11);
         wrongEmail = findViewById(R.id.textView10);
-
-
         chronometer = findViewById(R.id.chronometer);
         sendPassword1 = findViewById(R.id.sendPassword1);
-
-
+        next = findViewById(R.id.next);
         sendPasswordSuccess1.setVisibility(View.INVISIBLE);
         wrongEmail.setVisibility(View.INVISIBLE);
-
         mEmailField = findViewById(R.id.emailRecover);
         mPasswordField = findViewById(R.id.passwordRecover);
+        next.setVisibility(View.INVISIBLE);
     }
     Boolean findSuccess=false;
     String uId;
@@ -82,7 +84,10 @@ TextView chronometer;
 
                         }
                     if(!findSuccess){
-                        wrongEmail.setVisibility(View.VISIBLE);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Неверно введен E-mail",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                     else {
 
@@ -125,6 +130,8 @@ TextView chronometer;
                                 chronometer.setVisibility(View.INVISIBLE);
                                 sendPasswordSuccess1.setVisibility(View.INVISIBLE);
                                 sendPassword1.setText("Выслать пароль ещё раз");
+                                sendPassword1.setBackground(getResources().getDrawable(R.drawable.bluegradient));
+                                next.setVisibility(View.VISIBLE);
                                 sendPassword1.setVisibility(View.VISIBLE);
 
 
@@ -142,24 +149,21 @@ TextView chronometer;
                 }
             });
 
-
-
+        }
+        if(id==R.id.next ){
+            String password = mPasswordField.getText().toString().trim();
+            if(!password.equals(message) || !generateSuccess){
+                showDialog("Пароль введён не правильно",newPasswordActivity.this);
+            }
+            else {
+                Intent intent = new Intent(this,newNewPasswordActivity.class);
+                intent.putExtra("uID",uId);
+                intent.putExtra("email",email);
+                startActivity(intent);
+                finish();
+            }
 
         }
-     //   if(id==  ){
-       //     String password = mPasswordField.getText().toString().trim();
-         //   if(!password.equals(message) || !generateSuccess){
-           //     showDialog("Пароль введён не правильно",newPasswordActivity.this);
-           // }
-            //else {
-              //  Intent intent = new Intent(this,newNewPasswordActivity.class);
-                //intent.putExtra("uID",uId);
-               // intent.putExtra("email",email);
-                //startActivity(intent);
-                //finish();
-            //}
-
-        //}
 
 
 
