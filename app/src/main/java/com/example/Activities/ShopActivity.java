@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.Classes.Dialogs.confirmationOfPurchaseCouponsDialog;
 import com.example.Classes.ExpandingRecycler.CouponsRecycler;
 import com.example.Classes.ExpandingRecycler.ExpandingRecycler;
+import com.example.Classes.ExpandingRecycler.InfoCoupons;
 import com.example.Classes.Pojo.Coupons;
 import com.example.Classes.Service;
 import com.example.ecohelp.R;
@@ -65,17 +66,25 @@ public class ShopActivity extends BaseActivity  {
 
 
         //EXPANDING RECYCLER ----- DANGEROUS!!!!!!!!
-        List<CouponsRecycler> couponsRecyclerList = null;
+        List<CouponsRecycler> couponsRecyclerList = new ArrayList<>();
+        List<InfoCoupons> infos = new ArrayList<>();
+        infos.add(new InfoCoupons("coup1"));
+        infos.add(new InfoCoupons("coup2"));
+        infos.add(new InfoCoupons("coup3"));
+        infos.add(new InfoCoupons("coup4"));
+        infos.add(new InfoCoupons("coup5"));
+
+        couponsRecyclerList.add(new CouponsRecycler(String.valueOf(R.drawable.a1), (infos)));
 
         RecyclerView recyclerView = findViewById(R.id.item);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
 
         ExpandingRecycler adapter = new ExpandingRecycler(couponsRecyclerList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
 
-        setInitialData();
+//        setInitialData();
 
 
 
@@ -85,35 +94,35 @@ public class ShopActivity extends BaseActivity  {
         onBackPressed();  //или this.finish или что то свое
         return true;
     }
-    public void setInitialData(){
-        coupons = new ArrayList<>();
-        Service.getInstance().getJSONCouponsApi().loadList().enqueue(new Callback<List<Coupons>>() {
-            @Override
-            public void onResponse(Call<List<Coupons>> call, Response<List<Coupons>> response) {
-                coupons.addAll(Objects.requireNonNull(response.body()));
-                for (int i = 0; i < coupons.size() ; i++) {
-                    String nameShop = coupons.get(i).getShopName();
-                    String info = coupons.get(i).getShopName();
-                    String description = coupons.get(i).getDescription();
-                    String start = coupons.get(i).getStart();
-                    String end = coupons.get(i).getEnd();
-                    Long cost = coupons.get(i).getCost();
-
-                    //Возможно лучше будет добавить Логотип в ресурсы проекта чтобы не грузить вечно картинки с сети
-                    String urlLogo = coupons.get(i).getImage();
-
-                    //Тут добавлять элементы в Recycler
-
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Coupons>> call, Throwable t) {
-
-            }
-        });
-    }
+//    public void setInitialData(){
+//        coupons = new ArrayList<>();
+//        Service.getInstance().getJSONCouponsApi().loadList().enqueue(new Callback<List<Coupons>>() {
+//            @Override
+//            public void onResponse(Call<List<Coupons>> call, Response<List<Coupons>> response) {
+//                coupons.addAll(Objects.requireNonNull(response.body()));
+//                for (int i = 0; i < coupons.size() ; i++) {
+//                    String nameShop = coupons.get(i).getShopName();
+//                    String info = coupons.get(i).getShopName();
+//                    String description = coupons.get(i).getDescription();
+//                    String start = coupons.get(i).getStart();
+//                    String end = coupons.get(i).getEnd();
+//                    Long cost = coupons.get(i).getCost();
+//
+//                    //Возможно лучше будет добавить Логотип в ресурсы проекта чтобы не грузить вечно картинки с сети
+//                    String urlLogo = coupons.get(i).getImage();
+//
+//                    //Тут добавлять элементы в Recycler
+//
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Coupons>> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
 
     Boolean haveBarcode;

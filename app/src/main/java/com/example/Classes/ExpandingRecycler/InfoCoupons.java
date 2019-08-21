@@ -3,25 +3,25 @@ package com.example.Classes.ExpandingRecycler;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class infoCoupons implements Parcelable {
+public class InfoCoupons implements Parcelable {
     private String info;
 
-    public infoCoupons(String info) {
+    public InfoCoupons(String info) {
         this.info = info;
     }
-    protected infoCoupons(Parcel in){
+    protected InfoCoupons(Parcel in){
         info = in.readString();
     }
 
-    public static final Creator<infoCoupons> CREATOR = new Creator<infoCoupons>() {
+    public static final Creator<InfoCoupons> CREATOR = new Creator<InfoCoupons>() {
         @Override
-        public infoCoupons createFromParcel(Parcel in) {
-            return new infoCoupons(in);
+        public InfoCoupons createFromParcel(Parcel in) {
+            return new InfoCoupons(in);
         }
 
         @Override
-        public infoCoupons[] newArray(int size) {
-            return new infoCoupons[size];
+        public InfoCoupons[] newArray(int size) {
+            return new InfoCoupons[size];
         }
     };
 
