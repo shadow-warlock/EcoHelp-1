@@ -5,12 +5,22 @@ import android.os.Parcelable;
 
 public class InfoCoupons implements Parcelable {
     private String info;
+    private String date;
+    Long id;
+    Long cost;
+    String end;
 
-    public InfoCoupons(String info) {
+
+    public InfoCoupons(String info,String date,Long id,Long cost,String end) {
         this.info = info;
+        this.date = date;
+        this.id = id;
+        this.cost = cost;
+        this.end = end;
     }
     protected InfoCoupons(Parcel in){
         info = in.readString();
+        date = in.readString();
     }
 
     public static final Creator<InfoCoupons> CREATOR = new Creator<InfoCoupons>() {
@@ -32,7 +42,21 @@ public class InfoCoupons implements Parcelable {
         this.info = info;
     }
 
-
+    public String getDate(){
+        return date;
+    }
+    public void setDate(String date){
+        this.date = date;
+    }
+    public String getEnd(){
+        return end;
+    }
+    public Long getId(){
+        return id;
+    }
+    public Long getCost(){
+        return cost;
+    }
 
     @Override
     public int describeContents() {

@@ -32,8 +32,8 @@ public class confirmationOfPurchaseCouponsDialog extends DialogFragment implemen
      private String info;
     private String end;
     private String uid;
-    private int id;
-    private int cost;
+    private Long id;
+    private Long cost;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.confirmation_of_purchase_coupons,null);
 
@@ -43,8 +43,8 @@ public class confirmationOfPurchaseCouponsDialog extends DialogFragment implemen
          info = bundle.getString("info");
          end = bundle.getString("end");
          uid = bundle.getString("uid");
-         id = bundle.getInt("id");
-         cost = bundle.getInt("cost");
+         id = bundle.getLong("id");
+         cost = bundle.getLong("cost");
         String trueInfo = info+"\n действительна до"+end;
         String trueCost = cost+" баллов";
         infoTextView.setText(trueInfo);
@@ -63,7 +63,7 @@ public class confirmationOfPurchaseCouponsDialog extends DialogFragment implemen
     public void onClick(View v) {
         try {
 
-
+           //Проверяю есть штрихкод на этот купон
             Service.getInstance().getJSONGetBarcodeByCouponApi().getBarcodeWithId(id).enqueue(new Callback<BarCode>() {
 
                 @Override
@@ -91,17 +91,19 @@ public class confirmationOfPurchaseCouponsDialog extends DialogFragment implemen
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference uidRef = rootRef.child("users").child(uid);
         ValueEventListener valueEventListener = new ValueEventListener() {
-
+            //Покупка купона
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+               //NumberCoupons обозначает количество всех купонов у пользователя
                 Long numberCoupons =  dataSnapshot.child("Coupons").child("NumberCoupons").getValue(Long.class);
 
 
 
                 Long coinsAmount = dataSnapshot.getValue(Long.class);
                 if (coinsAmount >= cost && haveBarcode) {
+
+
                     Long trueNumberCoupons = numberCoupons+1;
 
                     uidRef.child("Coupons").child("NumberCoupons").setValue(trueNumberCoupons);

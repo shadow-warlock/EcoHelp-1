@@ -22,7 +22,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/achievment2"
+                    android:id="@+id/avatar1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -36,7 +36,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/achievment1"
+                    android:id="@+id/avatar2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

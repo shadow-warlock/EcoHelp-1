@@ -8,6 +8,7 @@
 
         <bitmap
             android:src="@drawable/ierztdgez4u"
+            android:gravity="center"
                   />
     </item>
 

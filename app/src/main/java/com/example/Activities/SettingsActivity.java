@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment;
 import android.os.Bundle;
 
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SettingsActivity extends BaseActivity {
     DialogFragment dlg1;
-    TextView uId;
+    TextView uIdTextView;
     ImageView avatarView;
 
 
@@ -44,23 +45,22 @@ public class SettingsActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Настройки");
         }
-        uId = findViewById(R.id.uID);
-        uId.setText("UID: " + getUid());
+        uIdTextView = findViewById(R.id.uID);
+        uIdTextView.setText("UID: " + getUid());
         avatarView = findViewById(R.id.avatarView);
         DatabaseReference rootRef2 = FirebaseDatabase.getInstance().getReference();
         DatabaseReference uidRef2 = rootRef2.child("users").child(getUid());
         ValueEventListener valueEventListener2 = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 String Avatar = dataSnapshot.child("Avatar").getValue(String.class);
 
                 if (Avatar != null) {
                     if (Avatar.equals("1")) {
-                        avatar = (R.drawable.a1);
+                        avatarView.setImageResource(R.drawable.a1);
                     }
                     else if (Avatar.equals("2")) {
-                        avatar = (R.drawable.a2);
+                        avatarView.setImageResource(R.drawable.a2);
                     }
                 }
 
@@ -72,7 +72,7 @@ public class SettingsActivity extends BaseActivity {
             }
         };
         uidRef2.addListenerForSingleValueEvent(valueEventListener2);
-        avatarView.setImageResource(avatar);
+
     }
 
 
@@ -88,7 +88,10 @@ public class SettingsActivity extends BaseActivity {
         if (i == R.id.changeAvatar) {
             dlg1 = new ChooseAvatarDialog();
             Bundle bundle = new Bundle();
-            bundle.putString(getUid(),"uID");
+            bundle.clear();
+            String uid = getUid();
+            bundle.putString(uid,"uid");
+            Log.v("UIDDDDD",getUid());
             dlg1.setArguments(bundle);
             dlg1.show(getSupportFragmentManager(), "wdw");
 
